@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="topbar"><div><h1>Профиль</h1><p>Минимальные настройки без регистрации и паролей.</p></div></header>
+<section class="profile-grid">
+  <div class="card profile-card"><div class="avatar big">{{ user.avatar }}</div><h2>{{ user.nickname }}</h2><p>{{ level }} уровень · {{ user.xp }} очков опыта · серия {{ user.streak }} дней</p><div class="progress"><i style="width: {{ level_progress }}%"></i></div></div>
+  <div class="card settings-card"><h2>Настройки</h2><form method="post" class="form-grid"><label>Никнейм</label><input name="nickname" value="{{ user.nickname }}"><label>Аватар</label><input name="avatar" maxlength="2" value="{{ user.avatar }}"><label>Тема</label><select name="theme"><option value="light" {{ 'selected' if settings.theme == 'light' }}>Светлая</option><option value="dark" {{ 'selected' if settings.theme == 'dark' }}>Тёмная</option></select><label>Цвет интерфейса</label><select name="accent"><option value="purple" {{ 'selected' if settings.accent == 'purple' }}>Фиолетовый</option><option value="blue" {{ 'selected' if settings.accent == 'blue' }}>Синий</option><option value="green" {{ 'selected' if settings.accent == 'green' }}>Зелёный</option><option value="pink" {{ 'selected' if settings.accent == 'pink' }}>Нежно-розовый</option></select><label class="toggle"><input type="checkbox" name="notifications" {{ 'checked' if settings.notifications }}> Уведомления включены</label><button class="btn primary" type="submit">Сохранить</button></form></div>
+</section>
+{% endblock %}

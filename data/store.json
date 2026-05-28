@@ -1,0 +1,119 @@
+{
+  "users": {
+    "дада": {
+      "nickname": "дада",
+      "avatar": "ДА",
+      "settings": {
+        "theme": "light",
+        "accent": "green",
+        "notifications": true
+      },
+      "tasks": [
+        {
+          "id": "21f7d2e0-171d-4ad2-9237-5f023678082d",
+          "title": "pflfxrf",
+          "description": "gbfbfgklgb",
+          "subtasks": [
+            {
+              "id": "cf07d813-a89e-427a-ab15-1273b2d7e78a",
+              "title": "cj,hfnmlfyyst",
+              "done": true
+            },
+            {
+              "id": "4f08bb47-c9c2-45ab-ab6b-72d8e23894a9",
+              "title": "gfkgfnkfg",
+              "done": true
+            },
+            {
+              "id": "26e59b2c-bd9c-4f00-8847-28dae95b11f6",
+              "title": "jgnkjb",
+              "done": true
+            }
+          ],
+          "priority": "medium",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 30,
+          "date": "",
+          "time": "",
+          "attachments": [
+            {
+              "name": "free-icon-tomato-1790387.png",
+              "stored": "file_free-icon-tomato-1790387.png",
+              "kind": "file"
+            }
+          ],
+          "done": true,
+          "earned_xp": 30,
+          "created_at": "2026-05-18T15:37:20",
+          "completed_at": "2026-05-18T16:34:50"
+        },
+        {
+          "id": "04498f58-a90b-43b5-8a71-4a85ac03652b",
+          "title": "Реализация главы №2 диплома",
+          "description": "Закончить технический проект",
+          "subtasks": [
+            {
+              "id": "68980a19-ee51-41a9-a68d-19898497ecda",
+              "title": "план",
+              "done": true
+            },
+            {
+              "id": "b2ce49ea-d076-4ca4-a75b-061d9a96a066",
+              "title": "техническая часть",
+              "done": true
+            },
+            {
+              "id": "9a65f3e1-bc0c-4409-bbe6-b57bc2739892",
+              "title": "описание",
+              "done": true
+            }
+          ],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 70,
+          "date": "2026-05-18",
+          "time": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 70,
+          "created_at": "2026-05-18T16:08:04",
+          "completed_at": "2026-05-18T17:05:01"
+        }
+      ],
+      "xp": 910,
+      "streak": 1,
+      "last_activity": "2026-05-18",
+      "created_at": "2026-05-18T15:36:18"
+    },
+    "олеся": {
+      "nickname": "олеся",
+      "avatar": "О",
+      "settings": {
+        "theme": "light",
+        "accent": "purple",
+        "notifications": true
+      },
+      "tasks": [],
+      "xp": 0,
+      "streak": 0,
+      "last_activity": null,
+      "created_at": "2026-05-18T16:33:41"
+    },
+    "Олесся": {
+      "nickname": "Олесся",
+      "avatar": "О",
+      "settings": {
+        "theme": "light",
+        "accent": "purple",
+        "notifications": true
+      },
+      "tasks": [],
+      "xp": 0,
+      "streak": 0,
+      "last_activity": null,
+      "created_at": "2026-05-18T16:33:50"
+    }
+  }
+}
