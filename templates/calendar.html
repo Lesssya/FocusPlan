@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="topbar compact-topbar">
+  <div><h1>Календарь</h1><p>Задачи с датой, без даты и привязка ко времени.</p></div>
+  <div class="top-actions">
+    <a class="view-tab {{ 'active' if selected_view == 'day' }}" href="{{ url_for('calendar', view='day', month=selected_month) }}">День</a>
+    <a class="view-tab {{ 'active' if selected_view == 'week' }}" href="{{ url_for('calendar', view='week', month=selected_month) }}">Неделя</a>
+    <a class="view-tab {{ 'active' if selected_view == 'month' }}" href="{{ url_for('calendar', view='month', month=selected_month) }}">Месяц</a>
+    <button class="btn primary" data-modal-open="taskModal">+ Задача</button>
+  </div>
+</header>
+
+<section class="card calendar-card pro-calendar compact-calendar">
+  <div class="calendar-toolbar">
+    <a class="btn ghost" href="{{ url_for('calendar', view=selected_view, month=previous_month) }}">←</a>
+    <b>{% if selected_view == 'month' %}{{ month_title }}{% else %}{{ format_date(week_days[0]) }} — {{ format_date(week_days[6]) }}{% endif %}</b>
+    <a class="btn ghost" href="{{ url_for('calendar', view=selected_view, month=next_month) }}">→</a>
+    <a class="btn secondary" href="{{ url_for('calendar', view=selected_view) }}">Сегодня</a>
+  </div>
+
+  {% if no_date_tasks %}
+    <div class="calendar-undated"><b>Без даты</b>{% for task in no_date_tasks[:6] %}<span class="month-task {{ task.priority }}">{{ task.title }}</span>{% endfor %}</div>
+  {% endif %}
+
+  {% if selected_view == 'week' %}
+  <div class="week-calendar">
+    <div class="time-cell head"></div>
+    {% for day in week_days %}<div class="day-head-cell {{ 'today' if day == today }}"><span>{{ ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][loop.index0] }}</span><b>{{ day[8:10] }}</b></div>{% endfor %}
+    <div class="time-cell all-day-label">Весь день</div>
+    {% for day in week_days %}<div class="hour-cell all-day-cell">{% for task in tasks if task.date == day and not task.time %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>без времени</span></div>{% endfor %}</div>{% endfor %}
+    {% for hour in hours %}
+      <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+      {% for day in week_days %}
+        <div class="hour-cell">
+          {% if day == today and hour == current_hour %}<div class="now-line" style="top: {{ current_minute }}%;"><span>{{ '%02d:%02d'|format(current_hour, current_minute) }}</span></div>{% endif %}
+          {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>{{ task.time }}</span></div>{% endfor %}
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if selected_view == 'day' %}
+  <div class="day-all-day">{% for task in tasks if task.date == today and not task.time %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>без времени</span></div>{% endfor %}</div>
+  <div class="day-calendar">
+    {% for hour in hours %}
+      <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+      <div class="hour-cell large">
+        {% if hour == current_hour %}<div class="now-line" style="top: {{ current_minute }}%;"><span>{{ '%02d:%02d'|format(current_hour, current_minute) }}</span></div>{% endif %}
+        {% for task in tasks if task.date == today and task.time and task.time[:2]|int == hour %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>{{ task.time }}</span></div>{% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if selected_view == 'month' %}
+  <div class="month-calendar">
+    {% for name in ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'] %}<div class="month-weekday">{{ name }}</div>{% endfor %}
+    {% for day in month_days %}<div class="month-day {{ 'today' if day == today }}"><b>{{ day[8:10] }}</b>{% for task in tasks if task.date == day %}<div class="month-task {{ task.priority }} {{ 'done' if task.done }}">{{ task.time or '—' }} {{ task.title }}</div>{% endfor %}</div>{% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% include "partials/task_modal.html" %}
+{% endblock %}

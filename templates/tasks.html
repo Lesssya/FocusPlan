@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="topbar compact-topbar">
+  <div><h1>Задачи</h1><p>Фильтруй задачи по дате и папкам, раскрывай карточку для подробностей.</p></div>
+  <div class="top-actions"><a class="btn secondary" href="{{ url_for('matrix') }}">По матрице</a><button class="btn primary" data-modal-open="taskModal">+ Задача</button></div>
+</header>
+
+<section class="card folder-panel">
+  <div class="folder-tabs">
+    <a class="{{ 'active' if active_folder == 'all' }}" href="{{ url_for('tasks_page', filter=active_filter) }}">Все папки</a>
+    {% for folder in folders %}<a class="{{ 'active' if active_folder == folder }}" href="{{ url_for('tasks_page', filter=active_filter, folder=folder) }}">{{ folder }}</a>{% endfor %}
+  </div>
+  <form method="post" action="{{ url_for('add_folder') }}" class="folder-form"><input name="folder" placeholder="Новая папка"><button class="btn secondary" type="submit">+ Папка</button></form>
+</section>
+
+<section class="card task-page-card">
+  <div class="task-tabs">
+    <a class="{{ 'active' if active_filter == 'all' }}" href="{{ url_for('tasks_page', folder=active_folder) }}">Все задачи</a>
+    <a class="{{ 'active' if active_filter == 'dated' }}" href="{{ url_for('tasks_page', filter='dated', folder=active_folder) }}">С датой</a>
+    <a class="{{ 'active' if active_filter == 'nodate' }}" href="{{ url_for('tasks_page', filter='nodate', folder=active_folder) }}">Без даты</a>
+  </div>
+  {% if tasks %}<div class="task-list">{% for task in tasks %}{% set compact_task = False %}{% include "partials/task_card.html" %}{% endfor %}</div>{% else %}<div class="empty">Нет задач по выбранному фильтру.</div>{% endif %}
+</section>
+{% include "partials/task_modal.html" %}
+{% endblock %}

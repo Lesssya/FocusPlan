@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="focus-page">
+  <div class="focus-card">
+    <div class="focus-top"><a href="{{ url_for('dashboard') }}" id="focusBackLink">← Назад</a><span>Фокус-сессия</span></div>
+    <h1>Фокусируйся на важном</h1>
+    <select id="focusTask">
+      {% for task in active_tasks %}<option>{{ task.title }}</option>{% endfor %}
+      {% if not active_tasks %}<option>Свободная фокус-сессия</option>{% endif %}
+    </select>
+    <div class="timer-shell" id="timerShell" style="--timer-progress:0deg"><div class="timer" id="timer">25:00</div></div>
+    <div class="timer-actions"><button class="btn primary" id="timerMainButton" type="button">Старт</button></div>
+    <button class="btn ghost hidden" id="earlyFinishButton" type="button">Завершить раньше</button>
+    <form method="post" action="{{ url_for('complete_focus') }}" id="completeFocusForm" hidden></form>
+    <p class="focus-hint">+25 очков опыта и серия дней начисляются только после полного завершения фокус-сессии.</p>
+  </div>
+</section>
+<div class="modal" id="earlyFinishModal"><div class="modal-card confirm-card"><h2>Отключить таймер досрочно?</h2><p>Если выйти сейчас, очки опыта не начислятся, а фокус-сессия не будет засчитана.</p><div class="timer-actions"><button class="btn secondary" id="stayFocusButton" type="button">Остаться</button><button class="btn ghost" id="backgroundFocusButton" type="button">Продолжить в фоне</button><button class="btn ghost danger" id="leaveFocusButton" type="button">Выйти без очков</button></div></div></div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="login-shell">
+  <div class="login-card">
+    <div class="login-illustration">🍅</div>
+    <h1>Планируй проще</h1>
+    <p>Электронный планер с фокус-сессиями, приоритетами и системой серии дней без сложной регистрации.</p>
+    <form method="post" class="login-form">
+      <label>Никнейм</label>
+      <input name="nickname" placeholder="Например, Olesya" autocomplete="off">
+      {% if error %}<div class="error">{{ error }}</div>{% endif %}
+      <button class="btn primary" type="submit">Начать</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

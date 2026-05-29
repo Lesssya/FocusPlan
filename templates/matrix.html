@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="topbar compact-topbar"><div><h1>Матрица приоритетов</h1><p>Упрощённая матрица Эйзенхауэра: важно/срочно.</p></div><button class="btn primary" data-modal-open="taskModal">+ Задача</button></header>
+<section class="matrix-grid">
+  <div class="card quadrant red"><div class="quad-strip"></div><h2>Сделать сейчас</h2><p>Срочно и важно</p>{% for task in matrix.urgent_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}<button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="high" data-preset-urgency="urgent">+ Добавить задачу</button></div>
+  <div class="card quadrant yellow"><div class="quad-strip"></div><h2>Запланировать</h2><p>Важно, но не срочно</p>{% for task in matrix.not_urgent_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}<button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="high" data-preset-urgency="not_urgent">+ Добавить задачу</button></div>
+  <div class="card quadrant blue"><div class="quad-strip"></div><h2>Упростить</h2><p>Срочно, но не важно</p>{% for task in matrix.urgent_not_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}<button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="low" data-preset-urgency="urgent">+ Добавить задачу</button></div>
+  <div class="card quadrant gray"><div class="quad-strip"></div><h2>Отложить</h2><p>Не срочно и не важно</p>{% for task in matrix.not_urgent_not_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}<button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="low" data-preset-urgency="not_urgent">+ Добавить задачу</button></div>
+</section>
+{% include "partials/task_modal.html" %}
+{% endblock %}

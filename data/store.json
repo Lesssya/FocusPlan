@@ -1,0 +1,207 @@
+{
+  "users": {
+    "дада": {
+      "nickname": "дада",
+      "avatar": "Д",
+      "settings": {
+        "theme": "light",
+        "accent": "purple",
+        "notifications": true
+      },
+      "folders": [
+        "Учёба",
+        "Работа",
+        "Личное",
+        "gfg"
+      ],
+      "tasks": [
+        {
+          "id": "503b2eb4-cc6b-4058-a82c-436f023a8e6e",
+          "title": "Задание №1",
+          "description": "Описание задания №1",
+          "subtasks": [
+            {
+              "id": "d3125e27-b135-4a2a-a6ea-5a7d0a24abac",
+              "title": "подзадача 1",
+              "done": false
+            },
+            {
+              "id": "f20040ec-92ed-4d7f-b231-aab26698cf07",
+              "title": "подзадача 2",
+              "done": false
+            },
+            {
+              "id": "0df53f45-e370-4a93-bd62-dd74d78a3130",
+              "title": "подзадача 3",
+              "done": false
+            },
+            {
+              "id": "ac10ea63-2af8-410d-9484-9828d993bcb9",
+              "title": "подзадача 4",
+              "done": false
+            }
+          ],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 70,
+          "date": "2026-05-20",
+          "time": "09:23",
+          "folder": "Учёба",
+          "attachments": [
+            {
+              "name": "глава 2 - опрос.docx",
+              "stored": "file_5d3b3139_2_-_.docx",
+              "kind": "file"
+            }
+          ],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-18T20:22:52",
+          "completed_at": null
+        },
+        {
+          "id": "6e891ff7-cfee-469a-9083-bbd6fa4ee407",
+          "title": "Задача без даты",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "low",
+          "urgency": "not_urgent",
+          "xp": 10,
+          "date": "",
+          "time": "",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-18T20:28:11",
+          "completed_at": null
+        },
+        {
+          "id": "3a47f8d6-1bce-4a94-b9ab-994beea92651",
+          "title": "Задача на сегодня",
+          "description": "папка работа",
+          "subtasks": [],
+          "priority": "high",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 40,
+          "date": "2026-05-18",
+          "time": "22:28",
+          "folder": "Работа",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 40,
+          "created_at": "2026-05-18T20:30:30",
+          "completed_at": "2026-05-18T20:33:02"
+        },
+        {
+          "id": "8a293987-35fd-4455-9ada-38235abe581c",
+          "title": "Задача личная",
+          "description": "задача - отдых",
+          "subtasks": [
+            {
+              "id": "c4629076-f6a5-4ee4-b4c5-bff52e919c75",
+              "title": "посмотореть сериал",
+              "done": false
+            },
+            {
+              "id": "f5ddfd5e-17f5-4593-8a1d-5e963615a592",
+              "title": "почитать книжку",
+              "done": false
+            }
+          ],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 20,
+          "date": "",
+          "time": "",
+          "folder": "Личное",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-18T20:31:22",
+          "completed_at": null
+        },
+        {
+          "id": "9d6e3008-5e7c-4cbb-84c2-5b4310c1ee7e",
+          "title": "срочная, но не важная задача",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "low",
+          "urgency": "urgent",
+          "xp": 35,
+          "date": "2026-05-19",
+          "time": "",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-18T20:32:58",
+          "completed_at": null
+        },
+        {
+          "id": "0e1c7b96-9f49-479f-a2c2-26d013e05e12",
+          "title": "задачка - сделать сейчас",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 60,
+          "date": "",
+          "time": "",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-18T20:36:33",
+          "completed_at": null
+        },
+        {
+          "id": "e272caa4-c306-415d-83ae-e1cad850a3b3",
+          "title": "сделать срочно!",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 60,
+          "date": "",
+          "time": "",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-18T20:36:41",
+          "completed_at": null
+        },
+        {
+          "id": "122ef166-fb8c-4d71-a239-88f8899bc31d",
+          "title": "сделать очень срочно",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 60,
+          "date": "",
+          "time": "",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-18T20:36:49",
+          "completed_at": null
+        }
+      ],
+      "xp": 105,
+      "streak": 1,
+      "last_activity": "2026-05-18",
+      "created_at": "2026-05-18T20:20:27"
+    }
+  }
+}

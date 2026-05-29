@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="topbar compact-topbar">
+  <div><h1>Доброе утро, {{ user.nickname }} 👋</h1><p>Показываем только задачи на сегодня и задачи без даты.</p></div>
+  <button class="btn primary" data-modal-open="taskModal">+ Новая задача</button>
+</header>
+
+<section class="stats-grid">
+  <div class="card stat"><span>Прогресс дня</span><b>{{ stats.progress }}%</b><div class="progress"><i style="width: {{ stats.progress }}%"></i></div></div>
+  <div class="card stat"><span>Серия</span><b>🔥 {{ user.streak }}</b><p>дней активности</p></div>
+  <div class="card stat"><span>Опыт</span><b>⭐ {{ user.xp }}</b><p>{{ level_progress }}/100 до уровня</p></div>
+  <div class="card stat"><span>Задачи</span><b>{{ stats.done }}/{{ stats.total }}</b><p>выполнено</p></div>
+</section>
+
+<section class="content-grid">
+  <div class="card wide">
+    <div class="section-head"><h2>План на сегодня</h2><a href="{{ url_for('matrix') }}">Открыть матрицу</a></div>
+    {% if today_tasks %}<h3 class="list-title">Сегодня</h3><div class="task-list">{% for task in today_tasks %}{% set compact_task = False %}{% include "partials/task_card.html" %}{% endfor %}</div>{% endif %}
+    {% if no_date_tasks %}<h3 class="list-title">Без даты</h3><div class="task-list">{% for task in no_date_tasks %}{% set compact_task = False %}{% include "partials/task_card.html" %}{% endfor %}</div>{% endif %}
+    {% if not tasks %}<div class="empty">Пока нет задач на сегодня и задач без даты.</div>{% endif %}
+    <a class="btn secondary full mt" href="{{ url_for('tasks_page') }}">Открыть все задачи</a>
+  </div>
+
+  <div class="card focus-preview">
+    <h2>Фокус на сегодня</h2>
+    <div class="mascot">🦉</div>
+    <p>Запусти фокус-сессию на 25 минут и получи +25 очков опыта.</p>
+    <a class="btn primary full" href="{{ url_for('focus') }}">Начать фокус</a>
+  </div>
+</section>
+{% include "partials/task_modal.html" %}
+{% endblock %}

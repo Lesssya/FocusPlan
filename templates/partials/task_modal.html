@@ -1,0 +1,36 @@
+<div class="modal" id="taskModal">
+  <div class="modal-card wide-modal">
+    <button class="icon-btn modal-close" data-modal-close type="button">×</button>
+    <h2>Новая задача</h2>
+    <form method="post" action="{{ url_for('add_task') }}" class="form-grid" enctype="multipart/form-data">
+      <label>Название задачи *</label>
+      <input name="title" placeholder="Например, написать параграф 2.3" required>
+
+      <label>Описание задачи</label>
+      <textarea name="description" placeholder="Кратко опишите, что нужно сделать"></textarea>
+
+      <label>Подпункты</label>
+      <div class="subtask-editor" data-subtask-editor>
+        <div class="subtask-input-row"><input name="subtask_items" placeholder="Например, собрать материалы"><button class="icon-btn" type="button" data-add-subtask>+</button></div>
+      </div>
+
+      <div class="two-cols">
+        <div><label>Дата выполнения</label><input type="date" name="date"><small>Можно оставить пустым</small></div>
+        <div><label>Время</label><input type="time" name="time"><small>Можно оставить пустым</small></div>
+      </div>
+
+      <div class="two-cols">
+        <div><label>Папка</label><select name="folder" data-task-folder>{% for folder in user.folders %}<option value="{{ folder }}">{{ folder }}</option>{% endfor %}</select><input class="mt mini-input" name="new_folder" placeholder="Или новая папка"></div>
+        <div><label>Срочность</label><select name="urgency" data-task-urgency><option value="not_urgent" selected>Не срочно</option><option value="urgent">Срочно</option></select></div>
+      </div>
+
+      <div class="three-cols">
+        <div><label>Приоритет</label><select name="priority"><option value="low">Низкий</option><option value="medium" selected>Средний</option><option value="high">Высокий</option></select></div>
+        <div><label>Важность</label><select name="importance" data-task-importance><option value="low">Низкая</option><option value="medium" selected>Средняя</option><option value="high">Высокая</option></select></div>
+        <div><label>Файл</label><label class="file-button">📎 Прикрепить файл<input type="file" name="attachment"></label></div>
+      </div>
+
+      <button class="btn primary" type="submit">Добавить задачу</button>
+    </form>
+  </div>
+</div>
