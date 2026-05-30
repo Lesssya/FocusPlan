@@ -68,6 +68,7 @@ const stayFocusButton=document.getElementById('stayFocusButton');
 const leaveFocusButton=document.getElementById('leaveFocusButton');
 const focusBackLink=document.getElementById('focusBackLink');
 const completeFocusForm=document.getElementById('completeFocusForm');
+let pendingFocusHref=null;
 const FOCUS_KEY='focusPlanTimerState';
 const totalSecondsDefault=25*60;
 let totalSeconds=totalSecondsDefault;
@@ -140,12 +141,31 @@ function pauseTimer(){
   isPaused=true;
   renderTimer();
 }
-function askEarlyFinish(event){
+function hasActiveFocusSession(){
   const state=getFocusState();
-  if(state && state.started && calculateSecondsFromState(state)>0){
-    event.preventDefault();
+  return Boolean(state && state.started && calculateSecondsFromState(state)>0);
+}
+function askEarlyFinish(event, href=null){
+  if(hasActiveFocusSession()){
+    if(event)event.preventDefault();
+    pendingFocusHref=href;
     if(earlyFinishModal)earlyFinishModal.classList.add('open');
   }
+}
+function bindFocusNavigationWarning(){
+  if(!timerElement)return;
+  const links=[...document.querySelectorAll('.sidebar a, #focusBackLink')];
+  links.forEach((link)=>{
+    if(link.dataset.focusWarningBound)return;
+    link.dataset.focusWarningBound='1';
+    link.addEventListener('click',(event)=>{
+      const href=link.getAttribute('href');
+      if(!href || href.startsWith('#'))return;
+      const currentUrl=window.location.pathname+window.location.search;
+      if(href===currentUrl || href===window.location.pathname)return;
+      askEarlyFinish(event, href);
+    });
+  });
 }
 if(timerMainButton){
   const state=getFocusState();
@@ -162,9 +182,9 @@ if(timerMainButton){
   });
 }
 if(earlyFinishButton){earlyFinishButton.addEventListener('click',(event)=>askEarlyFinish(event))}
-if(focusBackLink){focusBackLink.addEventListener('click',(event)=>askEarlyFinish(event))}
+bindFocusNavigationWarning();
 if(stayFocusButton){stayFocusButton.addEventListener('click',()=>{if(earlyFinishModal)earlyFinishModal.classList.remove('open')})}
-if(leaveFocusButton){leaveFocusButton.addEventListener('click',()=>{stopTimerOnly();clearFocusState();window.location.href='/dashboard'})}
+if(leaveFocusButton){leaveFocusButton.addEventListener('click',()=>{stopTimerOnly();clearFocusState();window.location.href=pendingFocusHref||'/dashboard'})}
 renderTimer();
 setInterval(()=>{if(timerElement){renderTimer()}},1000);
 
