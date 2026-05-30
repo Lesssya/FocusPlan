@@ -8,7 +8,7 @@
       {% if task.description %}<p class="task-description short">{{ task.description }}</p>{% endif %}
       <div class="task-meta">
         <span>{{ format_date(task.date) }}{% if task.time %} · {{ task.time }}{% endif %}</span>
-        <span>{{ task.folder }}</span>
+        <span>{{ task.folder or "Без папки" }}</span>
         <a class="priority-pill priority-{{ task.priority }}" href="{{ url_for('matrix') }}">{{ priority_labels[task.priority] }}</a>
         <span class="xp-pill">+{{ task.xp }} опыта</span>
       </div>
@@ -58,7 +58,7 @@
         <div class="subtask-input-row"><input name="subtask_items" placeholder="Добавить подпункт"><button class="icon-btn" type="button" data-add-subtask>+</button></div>
       </div>
       <div class="two-cols"><div><label>Дата выполнения</label><input type="date" name="date" value="{{ task.date }}"></div><div><label>Время</label><input type="time" name="time" value="{{ task.time }}"></div></div>
-      <div class="two-cols"><div><label>Папка</label><select name="folder">{% for folder in user.folders %}<option value="{{ folder }}" {{ 'selected' if task.folder == folder }}>{{ folder }}</option>{% endfor %}</select><input class="mt mini-input" name="new_folder" placeholder="Или новая папка"></div><div><label>Примерное время</label><div class="estimate-row"><input type="number" min="0" name="estimate_value" value="{{ task.estimate_value }}"><select name="estimate_unit"><option value="minutes" {{ 'selected' if task.estimate_unit == 'minutes' }}>мин.</option><option value="hours" {{ 'selected' if task.estimate_unit == 'hours' }}>ч.</option><option value="days" {{ 'selected' if task.estimate_unit == 'days' }}>дн.</option></select></div></div></div>
+      <div class="two-cols"><div><label>Папка</label><select name="folder"><option value="" {{ 'selected' if not task.folder }}>Без папки</option>{% for folder in user.folders %}<option value="{{ folder }}" {{ 'selected' if task.folder == folder }}>{{ folder }}</option>{% endfor %}</select><input class="mt mini-input" name="new_folder" placeholder="Или новая папка"></div><div><label>Примерное время</label><div class="estimate-row"><input type="number" min="0" name="estimate_value" value="{{ task.estimate_value }}"><select name="estimate_unit"><option value="minutes" {{ 'selected' if task.estimate_unit == 'minutes' }}>мин.</option><option value="hours" {{ 'selected' if task.estimate_unit == 'hours' }}>ч.</option><option value="days" {{ 'selected' if task.estimate_unit == 'days' }}>дн.</option></select></div></div></div>
       <div class="three-cols task-logic-row"><div><label>Срочность</label><select name="urgency" data-task-urgency><option value="not_urgent" {{ 'selected' if task.urgency == 'not_urgent' }}>Не срочно</option><option value="urgent" {{ 'selected' if task.urgency == 'urgent' }}>Срочно</option></select></div><div><label>Важность</label><select name="importance" data-task-importance><option value="low" {{ 'selected' if task.importance == 'low' }}>Низкая</option><option value="medium" {{ 'selected' if task.importance == 'medium' }}>Средняя</option><option value="high" {{ 'selected' if task.importance == 'high' }}>Высокая</option></select></div><div><label>Автоприоритет</label><div class="auto-priority-pill {{ task.priority }}" data-auto-priority>{{ priority_labels[task.priority] }}</div><small>Рассчитывается автоматически</small></div></div>
       <button class="btn primary" type="submit">Сохранить изменения</button>
     </form>

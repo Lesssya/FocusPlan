@@ -20,7 +20,7 @@
       </div>
 
       <div class="two-cols">
-        <div><label>Папка</label><select name="folder" data-task-folder>{% for folder in user.folders %}<option value="{{ folder }}">{{ folder }}</option>{% endfor %}</select><input class="mt mini-input" name="new_folder" placeholder="Или новая папка"></div>
+        <div><label>Папка</label><select name="folder" data-task-folder><option value="" selected>Без папки</option>{% for folder in user.folders %}<option value="{{ folder }}">{{ folder }}</option>{% endfor %}</select><input class="mt mini-input" name="new_folder" placeholder="Или новая папка"></div>
         <div><label>Примерное время</label><div class="estimate-row"><input type="number" min="0" name="estimate_value" placeholder="Напр. 2"><select name="estimate_unit"><option value="minutes">мин.</option><option value="hours" selected>ч.</option><option value="days">дн.</option></select></div><small>Нужно для оценки трудоёмкости</small></div>
       </div>
 
