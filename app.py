@@ -354,6 +354,21 @@ def find_task(user: Dict[str, Any], task_id: str) -> Dict[str, Any] | None:
     return None
 
 
+def complete_task_with_rewards(user: Dict[str, Any], task: Dict[str, Any]) -> int:
+    if not task or task.get("done"):
+        return 0
+
+    task["done"] = True
+    earned = int(task.get("xp", 10))
+    task["earned_xp"] = earned
+    task["completed_at"] = datetime.now().isoformat(timespec="seconds")
+
+    add_xp(user, earned)
+    earned += check_task_achievements(user, task)
+
+    return earned
+
+
 @app.context_processor
 def inject_user_data():
     user = current_user()
@@ -625,14 +640,33 @@ def focus():
 def complete_focus():
     user = current_user()
     old_level = level_from_xp(int(user.get("xp", 0)))
+
+    focus_task_id = request.form.get("focus_task_id", "").strip()
+    complete_selected_task = request.form.get("complete_task") == "1"
+
     user = register_activity(user)
     user["focus_sessions"] = int(user.get("focus_sessions", 0)) + 1
+
     add_xp(user, 25)
     earned = 25
     earned += check_focus_achievements(user)
+
+    completed_task_title = None
+    if complete_selected_task and focus_task_id:
+        task = find_task(user, focus_task_id)
+        if task and not task.get("done"):
+            completed_task_title = task.get("title")
+            earned += complete_task_with_rewards(user, task)
+
     earned += check_level_achievement(user, level_from_xp(int(user.get("xp", 0))) > old_level)
+
     update_current_user(user)
-    session["confetti"] = {"earned": earned, "message": f"Фокус-сессия завершена! +{earned} XP"}
+
+    message = f"Фокус-сессия завершена! +{earned} XP"
+    if completed_task_title:
+        message = f"Фокус-сессия завершена, задача «{completed_task_title}» выполнена! +{earned} XP"
+
+    session["confetti"] = {"earned": earned, "message": message}
     return redirect(url_for("focus"))
 
 

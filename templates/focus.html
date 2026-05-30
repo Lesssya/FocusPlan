@@ -19,4 +19,14 @@
   <h2>Завершить таймер досрочно?</h2>
   <p>Если вы уйдете с этой вкладки, то завершите фокус-сессию досрочно, а дополнительные 25 XP не будут начислены. Продолжить сессию?</p>
   <div class="timer-actions"><button class="btn secondary" id="stayFocusButton" type="button">Продолжить</button><button class="btn ghost danger" id="leaveFocusButton" type="button">Завершить без XP</button></div></div></div>
+
+<div class="modal" id="focusTaskCompleteModal"><div class="modal-card confirm-card">
+  <h2>Фокус-сессия завершена!</h2>
+  <p>Вы получили +25 XP за концентрацию.</p>
+  <p id="focusCompletedTaskText">Отметить выбранную задачу выполненной?</p>
+  <div class="timer-actions">
+    <button class="btn primary" id="completeSelectedTaskButton" type="button">Отметить выполненной</button>
+    <button class="btn ghost" id="keepTaskInProgressButton" type="button">Оставить в работе</button>
+  </div>
+</div></div>
 {% endblock %}

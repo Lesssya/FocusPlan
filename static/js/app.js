@@ -68,6 +68,13 @@ const stayFocusButton=document.getElementById('stayFocusButton');
 const leaveFocusButton=document.getElementById('leaveFocusButton');
 const focusBackLink=document.getElementById('focusBackLink');
 const completeFocusForm=document.getElementById('completeFocusForm');
+const focusTaskSelect=document.getElementById('focusTask');
+const focusTaskIdInput=document.getElementById('focusTaskIdInput');
+const completeTaskInput=document.getElementById('completeTaskInput');
+const focusTaskCompleteModal=document.getElementById('focusTaskCompleteModal');
+const focusCompletedTaskText=document.getElementById('focusCompletedTaskText');
+const completeSelectedTaskButton=document.getElementById('completeSelectedTaskButton');
+const keepTaskInProgressButton=document.getElementById('keepTaskInProgressButton');
 let pendingFocusHref=null;
 const FOCUS_KEY='focusPlanTimerState';
 const totalSecondsDefault=25*60;
@@ -86,6 +93,17 @@ function calculateSecondsFromState(state){
   if(!state)return totalSecondsDefault;
   if(state.running){return Math.max(0,Math.ceil((state.endAt-Date.now())/1000));}
   return Math.max(0,parseInt(state.secondsLeft||totalSecondsDefault,10));
+}
+function submitFocusCompletion(completeTask){
+  if(focusTaskIdInput && focusTaskSelect){
+    focusTaskIdInput.value=focusTaskSelect.value||'';
+  }
+  if(completeTaskInput){
+    completeTaskInput.value=completeTask?'1':'0';
+  }
+  if(completeFocusForm){
+    completeFocusForm.submit();
+  }
 }
 function completeFocusInBackground(){ clearFocusState(); }
 function renderTimer(){
@@ -128,8 +146,20 @@ function startTimer(){
     if(secondsLeft<=0){
       stopTimerOnly();
       clearFocusState();
-      if(completeFocusForm)completeFocusForm.submit();
-      else completeFocusInBackground();
+      if(focusTaskSelect && focusTaskSelect.value){
+        const selectedOption=focusTaskSelect.options[focusTaskSelect.selectedIndex];
+        const taskTitle=selectedOption ? selectedOption.textContent.trim() : '';
+        if(focusCompletedTaskText){
+          focusCompletedTaskText.textContent=taskTitle ? `Вы работали над задачей «${taskTitle}». Отметить её выполненной?` : 'Отметить выбранную задачу выполненной?';
+        }
+        if(focusTaskCompleteModal){
+          focusTaskCompleteModal.classList.add('open');
+        }else{
+          submitFocusCompletion(false);
+        }
+      }else{
+        submitFocusCompletion(false);
+      }
     }
   },1000);
 }
@@ -185,6 +215,8 @@ if(earlyFinishButton){earlyFinishButton.addEventListener('click',(event)=>askEar
 bindFocusNavigationWarning();
 if(stayFocusButton){stayFocusButton.addEventListener('click',()=>{if(earlyFinishModal)earlyFinishModal.classList.remove('open')})}
 if(leaveFocusButton){leaveFocusButton.addEventListener('click',()=>{stopTimerOnly();clearFocusState();window.location.href=pendingFocusHref||'/dashboard'})}
+if(completeSelectedTaskButton){completeSelectedTaskButton.addEventListener('click',()=>submitFocusCompletion(true))}
+if(keepTaskInProgressButton){keepTaskInProgressButton.addEventListener('click',()=>submitFocusCompletion(false))}
 renderTimer();
 setInterval(()=>{if(timerElement){renderTimer()}},1000);
 
