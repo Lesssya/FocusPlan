@@ -455,10 +455,7 @@ def task_from_form(task_id: str, existing: Dict[str, Any] | None = None) -> Dict
     urgency = request.form.get("urgency", "not_urgent")
     priority = calculate_priority(importance, urgency)
     subtasks = get_subtasks_from_form((existing or {}).get("subtasks", []))
-    attachments = list((existing or {}).get("attachments", []))
-    file_attachment = save_uploaded_file(request.files.get("attachment"), task_id, "file")
-    if file_attachment:
-        attachments.append(file_attachment)
+    attachments = []
     return {
         "id": task_id,
         "title": request.form.get("title", "").strip(),
@@ -582,6 +579,8 @@ def calendar():
     tasks = sorted([t for t in user.get("tasks", []) if t.get("date")], key=lambda task: (task.get("date"), task.get("time") or "99:99"))
     no_date_tasks = [t for t in user.get("tasks", []) if not t.get("date")]
     selected_view = request.args.get("view", "week")
+    if selected_view not in ["day", "week", "month"]:
+        selected_view = "week"
     today = date.today()
     try:
         selected_month = datetime.strptime(request.args.get("month", today.strftime("%Y-%m")), "%Y-%m").date().replace(day=1)
@@ -593,10 +592,12 @@ def calendar():
     week_days = [(start_of_week + timedelta(days=i)).isoformat() for i in range(7)]
     month_days_count = (next_month - selected_month).days
     month_days = [(selected_month + timedelta(days=i)).isoformat() for i in range(month_days_count)]
+    month_leading_blanks = selected_month.weekday()
     hours = list(range(8, 23))
     now = datetime.now()
     return render_template(
         "calendar.html", tasks=tasks, no_date_tasks=no_date_tasks, week_days=week_days, month_days=month_days,
+        month_leading_blanks=month_leading_blanks,
         hours=hours, today=today.isoformat(), selected_view=selected_view, current_hour=now.hour, current_minute=now.minute,
         month_title=month_label(selected_month), selected_month=selected_month.strftime("%Y-%m"),
         previous_month=previous_month.strftime("%Y-%m"), next_month=next_month.strftime("%Y-%m")

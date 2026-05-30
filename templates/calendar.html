@@ -56,6 +56,7 @@
   {% if selected_view == 'month' %}
   <div class="month-calendar">
     {% for name in ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'] %}<div class="month-weekday">{{ name }}</div>{% endfor %}
+    {% for _ in range(month_leading_blanks) %}<div class="month-day empty"></div>{% endfor %}
     {% for day in month_days %}<div class="month-day {{ 'today' if day == today }}"><b>{{ day[8:10] }}</b>{% for task in tasks if task.date == day %}<div class="month-task {{ task.priority }} {{ 'done' if task.done }}">{{ task.time or '—' }} {{ task.title }}</div>{% endfor %}</div>{% endfor %}
   </div>
   {% endif %}

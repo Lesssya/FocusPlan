@@ -86,15 +86,7 @@ function calculateSecondsFromState(state){
   if(state.running){return Math.max(0,Math.ceil((state.endAt-Date.now())/1000));}
   return Math.max(0,parseInt(state.secondsLeft||totalSecondsDefault,10));
 }
-function completeFocusInBackground(){
-  clearFocusState();
-  fetch('/focus/complete',{method:'POST',credentials:'same-origin'}).then(()=>{launchConfetti(25,'Фокус-сессия завершена! +25 очков опыта')}).catch(()=>{});
-}
-function checkGlobalFocusTimer(){
-  const state=getFocusState();
-  if(!state || !state.started || state.completed)return;
-  if(calculateSecondsFromState(state)<=0){completeFocusInBackground();}
-}
+function completeFocusInBackground(){ clearFocusState(); }
 function renderTimer(){
   const state=getFocusState();
   if(state){

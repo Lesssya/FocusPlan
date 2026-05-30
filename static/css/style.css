@@ -6,3 +6,26 @@
 .task-row[open] .summary-arrow{transform:rotate(180deg)}
 /* FocusPlan gamification update */
 .estimate-row{display:grid;grid-template-columns:1fr 92px;gap:8px}.auto-priority-pill{height:42px;display:flex;align-items:center;justify-content:center;border-radius:13px;font-weight:900;border:1px solid var(--border);background:var(--surface-2)}.auto-priority-pill.high{background:#ffeaea;color:#c54444;border-color:#ffd0d0}.auto-priority-pill.medium{background:#fff4dc;color:#b56a00;border-color:#ffe0a5}.auto-priority-pill.low{background:#e9f8f1;color:#148356;border-color:#cceedd}.achievements-layout{display:grid;gap:14px}.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.achievement-card{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center;padding:14px;border:1px solid var(--border);border-radius:18px;background:var(--surface-2)}.achievement-card.locked{opacity:.58;filter:grayscale(.4)}.achievement-card.unlocked{background:linear-gradient(135deg,var(--surface),var(--accent-soft));border-color:rgba(124,92,255,.22)}.achievement-icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:var(--surface);box-shadow:inset 0 0 0 1px var(--border);font-size:25px}.achievement-card h3,.badge-card h3{margin-bottom:4px}.achievement-card span{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:900}.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.badge-card{display:flex;flex-direction:column;gap:8px;text-align:center;padding:16px;border:1px solid var(--border);border-radius:22px;background:var(--surface-2)}.badge-card.locked{opacity:.55;filter:grayscale(.65)}.badge-card.unlocked{background:radial-gradient(circle at top,rgba(124,92,255,.18),transparent 55%),var(--surface)}.badge-medal{width:88px;height:88px;margin:0 auto 4px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-soft),#fff);border:3px solid var(--surface);box-shadow:0 8px 28px rgba(124,92,255,.18),inset 0 0 0 1px var(--border);font-size:42px}.locked-hint{font-size:11px;color:var(--muted);font-weight:800}.active-badge-note{margin:10px auto 12px;display:inline-flex;padding:7px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:900}.profile-progress-caption{font-size:12px;margin-top:8px}.profile-achievements-preview{margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}.mini-achievement-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}.mini-achievement-row span{width:34px;height:34px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;border:1px solid var(--border);font-size:18px}.info-toast{background:var(--accent)}
+
+
+/* Правки: цветные плашки автоприоритета на карточках задач */
+.priority-pill{font-size:11px;font-weight:800;padding:5px 8px;border-radius:999px;border:1px solid transparent;text-decoration:none;display:inline-flex;align-items:center;line-height:1}
+.priority-pill.priority-high{background:#FDEAEA!important;color:#D64545!important;border-color:#F6C8C8!important}
+.priority-pill.priority-medium{background:#FFF4D6!important;color:#C77800!important;border-color:#FFE1A3!important}
+.priority-pill.priority-low{background:#EAF8EF!important;color:#1F9D55!important;border-color:#CBEBD7!important}
+.month-task.high,.calendar-task.high{background:#FDEAEA;color:#D64545;border:1px solid #F6C8C8}
+.month-task.medium,.calendar-task.medium{background:#FFF4D6;color:#C77800;border:1px solid #FFE1A3}
+.month-task.low,.calendar-task.low{background:#EAF8EF;color:#1F9D55;border:1px solid #CBEBD7}
+.month-day.empty{background:transparent;border:0;box-shadow:none;min-height:90px}
+.quadrant-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.quadrant-head h2{margin-bottom:7px}
+.quad-add{padding:7px 10px;font-size:12px;white-space:nowrap;border-radius:11px}
+.profile-achievements-preview .mini-achievement-row a{width:34px;height:34px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;border:1px solid var(--border);font-size:18px;color:var(--text);transition:.15s}
+.profile-achievements-preview .mini-achievement-row a:hover{transform:translateY(-1px);border-color:var(--accent);background:var(--accent-soft)}
+.achievement-card:target{outline:3px solid var(--accent);box-shadow:0 0 0 6px var(--accent-soft)}
+
+
+/* Исправление компактных кнопок в матрице приоритетов */
+.quadrant-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.quadrant-head>div{min-width:0;}
+.quadrant-head .quad-add{width:auto!important;min-width:unset!important;max-width:max-content!important;height:32px!important;padding:6px 12px!important;border-radius:999px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;white-space:nowrap!important;font-size:13px!important;font-weight:800!important;line-height:18px!important;}

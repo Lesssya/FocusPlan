@@ -13,7 +13,7 @@
       <h3>Открытые достижения</h3>
       {% if unlocked_achievement_codes %}
         <div class="mini-achievement-row">
-          {% for ach in achievements_catalog if ach.code in unlocked_achievement_codes %}<span title="{{ ach.title }}">{{ ach.icon }}</span>{% endfor %}
+          {% for ach in achievements_catalog if ach.code in unlocked_achievement_codes %}<a href="{{ url_for('achievements_page') }}#achievement-{{ ach.code }}" title="{{ ach.title }}">{{ ach.icon }}</a>{% endfor %}
         </div>
       {% else %}
         <p>Пока нет открытых достижений.</p>

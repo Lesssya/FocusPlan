@@ -2,7 +2,7 @@
   <div class="modal-card wide-modal">
     <button class="icon-btn modal-close" data-modal-close type="button">×</button>
     <h2>Новая задача</h2>
-    <form method="post" action="{{ url_for('add_task') }}" class="form-grid" enctype="multipart/form-data">
+    <form method="post" action="{{ url_for('add_task') }}" class="form-grid">
       <label>Название задачи *</label>
       <input name="title" placeholder="Например, написать параграф 2.3" required>
 
@@ -30,7 +30,6 @@
         <div><label>Автоприоритет</label><div class="auto-priority-pill medium" data-auto-priority>Средний</div><small>Рассчитывается автоматически</small></div>
       </div>
 
-      <div><label>Файл</label><label class="file-button">📎 Прикрепить файл<input type="file" name="attachment"></label></div>
 
       <button class="btn primary" type="submit">Добавить задачу</button>
     </form>

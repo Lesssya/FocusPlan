@@ -11,7 +11,7 @@
     <div class="achievement-grid">
       {% for achievement in achievements_catalog %}
         {% set unlocked = achievement.code in unlocked_achievement_codes %}
-        <div class="achievement-card {{ 'unlocked' if unlocked else 'locked' }}">
+        <div id="achievement-{{ achievement.code }}" class="achievement-card {{ 'unlocked' if unlocked else 'locked' }}">
           <div class="achievement-icon">{{ achievement.icon if unlocked else '🔒' }}</div>
           <div><h3>{{ achievement.title }}</h3><p>{{ achievement.description }}</p><span>+{{ achievement.xp }} XP</span></div>
         </div>
