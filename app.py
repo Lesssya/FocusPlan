@@ -24,6 +24,25 @@ DEFAULT_FOLDERS = ["Учёба", "Работа", "Личное"]
 PRIORITY_LABELS = {"low": "Низкий", "medium": "Средний", "high": "Высокий"}
 IMPORTANCE_LABELS = {"low": "Низкая", "medium": "Средняя", "high": "Высокая"}
 URGENCY_LABELS = {"not_urgent": "Не срочно", "urgent": "Срочно"}
+ESTIMATE_UNIT_LABELS = {"minutes": "мин.", "hours": "ч.", "days": "дн."}
+
+ACHIEVEMENTS = [
+    {"code": "first_task", "title": "Первый шаг", "description": "Выполнить первую задачу", "xp": 10, "icon": "✅"},
+    {"code": "first_focus", "title": "Фокус включён", "description": "Завершить первую фокус-сессию", "xp": 15, "icon": "⏱️"},
+    {"code": "three_day_streak", "title": "3 дня подряд", "description": "Заходить и выполнять действия 3 дня подряд", "xp": 20, "icon": "🔥"},
+    {"code": "ten_tasks", "title": "В потоке", "description": "Выполнить 10 задач", "xp": 25, "icon": "🌊"},
+    {"code": "new_level", "title": "Новый уровень", "description": "Впервые повысить уровень", "xp": 20, "icon": "⭐"},
+    {"code": "productive_day", "title": "День продуктивности", "description": "Выполнить 5 задач за один день", "xp": 15, "icon": "☀️"},
+    {"code": "urgent_important", "title": "Срочно и важно", "description": "Выполнить важную и срочную задачу", "xp": 20, "icon": "⚡"},
+]
+
+BADGES = [
+    {"code": "newbie", "title": "Новичок", "description": "Первые шаги в планировании", "required_level": 2, "icon": "🌱"},
+    {"code": "regular_planner", "title": "Планирую регулярно", "description": "Регулярное использование планирования", "required_level": 3, "icon": "📅"},
+    {"code": "focus_master", "title": "Фокус-мастер", "description": "Открывается на 5 уровне или после 5 фокус-сессий", "required_level": 5, "focus_sessions": 5, "icon": "🎯"},
+    {"code": "stable_progress", "title": "Стабильный прогресс", "description": "Постоянное движение вперёд", "required_level": 7, "icon": "🏆"},
+    {"code": "planning_expert", "title": "Эксперт планирования", "description": "Высокий уровень вовлечённости", "required_level": 10, "icon": "💎"},
+]
 
 MONTH_NAMES = {
     1: "Январь", 2: "Февраль", 3: "Март", 4: "Апрель", 5: "Май", 6: "Июнь",
@@ -85,6 +104,9 @@ def create_user(nickname: str) -> Dict[str, Any]:
         "xp": 0,
         "streak": 0,
         "last_activity": None,
+        "achievements": [],
+        "focus_sessions": 0,
+        "selected_badge": None,
         "created_at": datetime.now().isoformat(timespec="seconds"),
     }
 
@@ -96,19 +118,26 @@ def normalize_user(user: Dict[str, Any]) -> Dict[str, Any]:
     for folder in DEFAULT_FOLDERS:
         if folder not in user["folders"]:
             user["folders"].append(folder)
+    user.setdefault("achievements", [])
+    user.setdefault("focus_sessions", 0)
+    user.setdefault("selected_badge", None)
+    if user.get("selected_badge") and user["selected_badge"] not in available_badge_codes(user):
+        user["selected_badge"] = None
     for task in user.get("tasks", []):
         task.setdefault("id", str(uuid.uuid4()))
         task.setdefault("description", "")
         task.setdefault("subtasks", [])
         task.setdefault("attachments", [])
         task.setdefault("folder", "Учёба")
-        task.setdefault("priority", "medium")
         task.setdefault("importance", "medium")
         task.setdefault("urgency", "not_urgent")
+        task["priority"] = calculate_priority(task.get("importance", "medium"), task.get("urgency", "not_urgent"))
         task.setdefault("date", "")
         task.setdefault("time", "")
+        task.setdefault("estimate_value", "")
+        task.setdefault("estimate_unit", "hours")
         task.setdefault("done", False)
-        task["xp"] = calculate_task_xp(task.get("priority", "medium"), task.get("importance", "medium"), task.get("urgency", "not_urgent"))
+        task["xp"] = calculate_task_xp(task.get("importance", "medium"), task.get("urgency", "not_urgent"), task.get("subtasks", []))
         task.setdefault("earned_xp", task["xp"] if task.get("done") else 0)
     return user
 
@@ -144,15 +173,23 @@ def login_required(view):
     return wrapped
 
 
-def calculate_task_xp(priority: str, importance: str, urgency: str) -> int:
+def calculate_priority(importance: str, urgency: str) -> str:
+    if urgency == "urgent" and importance == "high":
+        return "high"
+    if urgency == "urgent" or importance == "high":
+        return "medium"
+    return "low"
+
+
+def calculate_task_xp(importance: str, urgency: str, subtasks: List[Dict[str, Any]] | None = None) -> int:
     xp = 10
-    xp += {"low": 0, "medium": 10, "high": 20}.get(priority, 10)
-    xp += {"low": 0, "medium": 10, "high": 25}.get(importance, 10)
-    xp += 15 if urgency == "urgent" else 0
+    xp += {"low": 2, "medium": 5, "high": 10}.get(importance, 5)
+    xp += 10 if urgency == "urgent" else 0
+    xp += 5 if subtasks else 0
     return xp
 
 
-def register_activity(user: Dict[str, Any], xp: int = 5) -> Dict[str, Any]:
+def register_activity(user: Dict[str, Any]) -> Dict[str, Any]:
     today = get_today()
     yesterday = get_yesterday()
     last_activity = user.get("last_activity")
@@ -163,16 +200,102 @@ def register_activity(user: Dict[str, Any], xp: int = 5) -> Dict[str, Any]:
     else:
         user["streak"] = 1
     user["last_activity"] = today
-    user["xp"] = max(0, int(user.get("xp", 0)) + xp)
     return user
 
 
+def level_state_from_xp(xp: int) -> Dict[str, int]:
+    level = 1
+    remaining = max(0, int(xp))
+    required = 100
+    total_to_current = 0
+    while remaining >= required:
+        remaining -= required
+        total_to_current += required
+        level += 1
+        required += 50
+    progress = round((remaining / required) * 100) if required else 0
+    return {"level": level, "current_xp": remaining, "required_xp": required, "progress": progress, "total_to_current": total_to_current}
+
+
 def level_from_xp(xp: int) -> int:
-    return max(1, xp // 100 + 1)
+    return level_state_from_xp(xp)["level"]
 
 
 def progress_to_next_level(xp: int) -> int:
-    return xp % 100
+    return level_state_from_xp(xp)["progress"]
+
+
+def add_xp(user: Dict[str, Any], xp: int) -> bool:
+    old_level = level_from_xp(int(user.get("xp", 0)))
+    user["xp"] = max(0, int(user.get("xp", 0)) + int(xp))
+    new_level = level_from_xp(int(user.get("xp", 0)))
+    return new_level > old_level
+
+
+def achievement_by_code(code: str) -> Dict[str, Any] | None:
+    return next((item for item in ACHIEVEMENTS if item["code"] == code), None)
+
+
+def badge_by_code(code: str) -> Dict[str, Any] | None:
+    return next((item for item in BADGES if item["code"] == code), None)
+
+
+def available_badge_codes(user: Dict[str, Any]) -> List[str]:
+    level = level_from_xp(int(user.get("xp", 0)))
+    focus_sessions = int(user.get("focus_sessions", 0))
+    codes = []
+    for badge in BADGES:
+        required_level = int(badge.get("required_level", 999))
+        required_focus = badge.get("focus_sessions")
+        if level >= required_level or (required_focus and focus_sessions >= int(required_focus)):
+            codes.append(badge["code"])
+    return codes
+
+
+def unlocked_achievement_codes(user: Dict[str, Any]) -> List[str]:
+    return [item.get("code") if isinstance(item, dict) else item for item in user.get("achievements", [])]
+
+
+def unlock_achievement(user: Dict[str, Any], code: str) -> int:
+    achievement = achievement_by_code(code)
+    if not achievement or code in unlocked_achievement_codes(user):
+        return 0
+    user.setdefault("achievements", []).append({"code": code, "received_at": datetime.now().isoformat(timespec="seconds")})
+    add_xp(user, int(achievement.get("xp", 0)))
+    session.setdefault("toasts", []).append(f"Достижение открыто: {achievement['title']} (+{achievement['xp']} XP)")
+    return int(achievement.get("xp", 0))
+
+
+def check_level_achievement(user: Dict[str, Any], level_up: bool) -> int:
+    if level_up:
+        return unlock_achievement(user, "new_level")
+    return 0
+
+
+def check_task_achievements(user: Dict[str, Any], task: Dict[str, Any]) -> int:
+    bonus = 0
+    completed_tasks = [item for item in user.get("tasks", []) if item.get("done")]
+    completed_today = [item for item in completed_tasks if str(item.get("completed_at", "")).startswith(get_today())]
+    if len(completed_tasks) >= 1:
+        bonus += unlock_achievement(user, "first_task")
+    if len(completed_tasks) >= 10:
+        bonus += unlock_achievement(user, "ten_tasks")
+    if len(completed_today) >= 5:
+        bonus += unlock_achievement(user, "productive_day")
+    if int(user.get("streak", 0)) >= 3:
+        bonus += unlock_achievement(user, "three_day_streak")
+    if task.get("urgency") == "urgent" and task.get("importance") == "high":
+        bonus += unlock_achievement(user, "urgent_important")
+    return bonus
+
+
+def check_focus_achievements(user: Dict[str, Any]) -> int:
+    bonus = 0
+    if int(user.get("focus_sessions", 0)) >= 1:
+        bonus += unlock_achievement(user, "first_focus")
+    if int(user.get("streak", 0)) >= 3:
+        bonus += unlock_achievement(user, "three_day_streak")
+    return bonus
 
 
 def task_stats(tasks: List[Dict[str, Any]]) -> Dict[str, int]:
@@ -234,20 +357,33 @@ def find_task(user: Dict[str, Any], task_id: str) -> Dict[str, Any] | None:
 @app.context_processor
 def inject_user_data():
     user = current_user()
-    base = {"current_endpoint": request.endpoint, "format_date": format_date}
+    base = {"current_endpoint": request.endpoint, "format_date": format_date, "estimate_unit_labels": ESTIMATE_UNIT_LABELS}
     if not user:
         return base
     settings = user.get("settings", DEFAULT_SETTINGS)
     settings["theme"] = "light"
+    level_state = level_state_from_xp(int(user.get("xp", 0)))
+    unlocked_codes = unlocked_achievement_codes(user)
+    available_badges = available_badge_codes(user)
+    active_badge = badge_by_code(user.get("selected_badge")) if user.get("selected_badge") in available_badges else None
     base.update({
         "user": user,
         "settings": settings,
-        "level": level_from_xp(int(user.get("xp", 0))),
-        "level_progress": progress_to_next_level(int(user.get("xp", 0))),
+        "level": level_state["level"],
+        "level_current_xp": level_state["current_xp"],
+        "level_required_xp": level_state["required_xp"],
+        "level_progress": level_state["progress"],
         "priority_labels": PRIORITY_LABELS,
         "importance_labels": IMPORTANCE_LABELS,
         "urgency_labels": URGENCY_LABELS,
+        "achievements_catalog": ACHIEVEMENTS,
+        "badges_catalog": BADGES,
+        "unlocked_achievement_codes": unlocked_codes,
+        "available_badge_codes": available_badges,
+        "active_badge": active_badge,
+        "profile_avatar": active_badge["icon"] if active_badge else user.get("avatar", "F"),
         "confetti": session.pop("confetti", None),
+        "toasts": session.pop("toasts", []),
     })
     return base
 
@@ -315,9 +451,10 @@ def add_folder():
 
 
 def task_from_form(task_id: str, existing: Dict[str, Any] | None = None) -> Dict[str, Any]:
-    priority = request.form.get("priority", "medium")
     importance = request.form.get("importance", "medium")
     urgency = request.form.get("urgency", "not_urgent")
+    priority = calculate_priority(importance, urgency)
+    subtasks = get_subtasks_from_form((existing or {}).get("subtasks", []))
     attachments = list((existing or {}).get("attachments", []))
     file_attachment = save_uploaded_file(request.files.get("attachment"), task_id, "file")
     if file_attachment:
@@ -326,13 +463,15 @@ def task_from_form(task_id: str, existing: Dict[str, Any] | None = None) -> Dict
         "id": task_id,
         "title": request.form.get("title", "").strip(),
         "description": request.form.get("description", "").strip(),
-        "subtasks": get_subtasks_from_form((existing or {}).get("subtasks", [])),
+        "subtasks": subtasks,
         "priority": priority,
         "importance": importance,
         "urgency": urgency,
-        "xp": calculate_task_xp(priority, importance, urgency),
+        "xp": calculate_task_xp(importance, urgency, subtasks),
         "date": request.form.get("date") or "",
         "time": request.form.get("time") or "",
+        "estimate_value": request.form.get("estimate_value", "").strip(),
+        "estimate_unit": request.form.get("estimate_unit", "hours"),
         "folder": request.form.get("new_folder", "").strip() or request.form.get("folder", "Учёба") or "Учёба",
         "attachments": attachments,
         "done": bool((existing or {}).get("done", False)),
@@ -352,7 +491,6 @@ def add_task():
         if task.get("folder") and task["folder"] not in user.get("folders", []):
             user.setdefault("folders", []).append(task["folder"])
         user.setdefault("tasks", []).append(task)
-        user = register_activity(user, xp=5)
         update_current_user(user)
     return redirect(request.referrer or url_for("dashboard"))
 
@@ -391,10 +529,14 @@ def toggle_task(task_id: str):
             was_done = bool(task.get("done", False))
             task["done"] = not was_done
             if task["done"]:
+                old_level = level_from_xp(int(user.get("xp", 0)))
                 earned = int(task.get("xp", 10))
                 task["earned_xp"] = earned
                 task["completed_at"] = datetime.now().isoformat(timespec="seconds")
-                user = register_activity(user, xp=earned)
+                user = register_activity(user)
+                add_xp(user, earned)
+                earned += check_task_achievements(user, task)
+                earned += check_level_achievement(user, level_from_xp(int(user.get("xp", 0))) > old_level)
             else:
                 lost = int(task.get("earned_xp", 0))
                 user["xp"] = max(0, int(user.get("xp", 0)) - lost)
@@ -481,10 +623,39 @@ def focus():
 @login_required
 def complete_focus():
     user = current_user()
-    user = register_activity(user, xp=25)
+    old_level = level_from_xp(int(user.get("xp", 0)))
+    user = register_activity(user)
+    user["focus_sessions"] = int(user.get("focus_sessions", 0)) + 1
+    add_xp(user, 25)
+    earned = 25
+    earned += check_focus_achievements(user)
+    earned += check_level_achievement(user, level_from_xp(int(user.get("xp", 0))) > old_level)
     update_current_user(user)
-    session["confetti"] = {"earned": 25}
+    session["confetti"] = {"earned": earned, "message": f"Фокус-сессия завершена! +{earned} XP"}
     return redirect(url_for("focus"))
+
+
+@app.route("/achievements")
+@login_required
+def achievements_page():
+    user = current_user()
+    return render_template("achievements.html", focus_sessions=int(user.get("focus_sessions", 0)))
+
+
+@app.route("/badges/select", methods=["POST"])
+@login_required
+def select_badge():
+    user = current_user()
+    badge_code = request.form.get("badge_code") or None
+    if not badge_code or badge_code == "none":
+        user["selected_badge"] = None
+    elif badge_code in available_badge_codes(user):
+        user["selected_badge"] = badge_code
+        badge = badge_by_code(badge_code)
+        if badge:
+            session.setdefault("toasts", []).append(f"Бейдж «{badge['title']}» установлен в профиль")
+    update_current_user(user)
+    return redirect(request.referrer or url_for("achievements_page"))
 
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -498,6 +669,10 @@ def profile():
         if new_nickname != old_nickname and new_nickname in store["users"]:
             return render_template("profile.html", error="Такой никнейм уже используется. Попробуйте другой вариант.")
         user["nickname"] = new_nickname
+        selected_badge = request.form.get("selected_badge") or None
+        if selected_badge and selected_badge not in available_badge_codes(user):
+            selected_badge = user.get("selected_badge")
+        user["selected_badge"] = selected_badge
         user["avatar"] = request.form.get("avatar", "").strip()[:2].upper() or new_nickname[:1].upper()
         user["settings"] = {"theme": "light", "accent": request.form.get("accent", "purple"), "notifications": bool(request.form.get("notifications"))}
         if new_nickname != old_nickname:

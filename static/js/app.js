@@ -1,3 +1,21 @@
+function calculateAutoPriority(importance, urgency){
+  if(urgency==='urgent' && importance==='high') return {value:'high', label:'Высокий'};
+  if(urgency==='urgent' || importance==='high') return {value:'medium', label:'Средний'};
+  return {value:'low', label:'Низкий'};
+}
+function updateAutoPriority(scope){
+  const root=scope||document;
+  root.querySelectorAll('form').forEach((form)=>{
+    const importance=form.querySelector('[data-task-importance]');
+    const urgency=form.querySelector('[data-task-urgency]');
+    const target=form.querySelector('[data-auto-priority]');
+    if(!importance || !urgency || !target) return;
+    const result=calculateAutoPriority(importance.value,urgency.value);
+    target.textContent=result.label;
+    target.classList.remove('low','medium','high');
+    target.classList.add(result.value);
+  });
+}
 function bindModalOpeners(){
   document.querySelectorAll('[data-modal-open]').forEach((button)=>{
     if(button.dataset.boundModal)return;
@@ -11,6 +29,7 @@ function bindModalOpeners(){
         const urgency=button.dataset.presetUrgency;
         if(importance){const field=modal.querySelector('[data-task-importance]'); if(field)field.value=importance;}
         if(urgency){const field=modal.querySelector('[data-task-urgency]'); if(field)field.value=urgency;}
+        updateAutoPriority(modal);
         modal.classList.add('open');
       }
     });
@@ -19,6 +38,8 @@ function bindModalOpeners(){
 bindModalOpeners();
 document.querySelectorAll('[data-modal-close]').forEach((button)=>{button.addEventListener('click',()=>button.closest('.modal').classList.remove('open'))});
 document.querySelectorAll('.modal').forEach((modal)=>{modal.addEventListener('click',(event)=>{if(event.target===modal)modal.classList.remove('open')})});
+document.addEventListener('change',(event)=>{if(event.target.matches('[data-task-importance],[data-task-urgency]')) updateAutoPriority(event.target.closest('.modal')||document)});
+updateAutoPriority(document);
 
 document.querySelectorAll('[data-subtask-editor]').forEach((editor)=>{
   editor.addEventListener('click',(event)=>{
@@ -45,7 +66,6 @@ const earlyFinishButton=document.getElementById('earlyFinishButton');
 const earlyFinishModal=document.getElementById('earlyFinishModal');
 const stayFocusButton=document.getElementById('stayFocusButton');
 const leaveFocusButton=document.getElementById('leaveFocusButton');
-const backgroundFocusButton=document.getElementById('backgroundFocusButton');
 const focusBackLink=document.getElementById('focusBackLink');
 const completeFocusForm=document.getElementById('completeFocusForm');
 const FOCUS_KEY='focusPlanTimerState';
@@ -152,11 +172,9 @@ if(timerMainButton){
 if(earlyFinishButton){earlyFinishButton.addEventListener('click',(event)=>askEarlyFinish(event))}
 if(focusBackLink){focusBackLink.addEventListener('click',(event)=>askEarlyFinish(event))}
 if(stayFocusButton){stayFocusButton.addEventListener('click',()=>{if(earlyFinishModal)earlyFinishModal.classList.remove('open')})}
-if(backgroundFocusButton){backgroundFocusButton.addEventListener('click',()=>{window.location.href='/dashboard'})}
 if(leaveFocusButton){leaveFocusButton.addEventListener('click',()=>{stopTimerOnly();clearFocusState();window.location.href='/dashboard'})}
 renderTimer();
-checkGlobalFocusTimer();
-setInterval(()=>{if(timerElement){renderTimer()}else{checkGlobalFocusTimer()}},1000);
+setInterval(()=>{if(timerElement){renderTimer()}},1000);
 
 function launchConfetti(earned, message){
   const layer=document.getElementById('confettiLayer');
@@ -178,5 +196,20 @@ function launchConfetti(earned, message){
   document.body.appendChild(toast);
   setTimeout(()=>toast.remove(),2600);
 }
+
+function launchToast(message){
+  const toast=document.createElement('div');
+  toast.className='toast info-toast';
+  toast.textContent=message;
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(),3200);
+}
+
 const earned=document.body.dataset.confettiEarned;
-if(earned){launchConfetti(earned)}
+const confettiMessage=document.body.dataset.confettiMessage;
+if(earned){launchConfetti(earned, confettiMessage || undefined)}
+try{
+  const toastData=document.getElementById('toastData');
+  const messages=toastData ? JSON.parse(toastData.textContent||'[]') : [];
+  messages.forEach((message,index)=>setTimeout(()=>launchToast(message), 250+index*450));
+}catch(e){}

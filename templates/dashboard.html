@@ -8,7 +8,7 @@
 <section class="stats-grid">
   <div class="card stat"><span>Прогресс дня</span><b>{{ stats.progress }}%</b><div class="progress"><i style="width: {{ stats.progress }}%"></i></div></div>
   <div class="card stat"><span>Серия</span><b>🔥 {{ user.streak }}</b><p>дней активности</p></div>
-  <div class="card stat"><span>Опыт</span><b>⭐ {{ user.xp }}</b><p>{{ level_progress }}/100 до уровня</p></div>
+  <div class="card stat"><span>Опыт</span><b>⭐ {{ user.xp }}</b><p>{{ level_current_xp }}/{{ level_required_xp }} XP до уровня</p></div>
   <div class="card stat"><span>Задачи</span><b>{{ stats.done }}/{{ stats.total }}</b><p>выполнено</p></div>
 </section>
 
@@ -24,7 +24,7 @@
   <div class="card focus-preview">
     <h2>Фокус на сегодня</h2>
     <div class="mascot">🦉</div>
-    <p>Запусти фокус-сессию на 25 минут и получи +25 очков опыта.</p>
+    <p>Запусти фокус-сессию на 25 минут и получи +25 XP.</p>
     <a class="btn primary full" href="{{ url_for('focus') }}">Начать фокус</a>
   </div>
 </section>

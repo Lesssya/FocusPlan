@@ -6,7 +6,7 @@
   <title>FocusPlan</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body data-confetti-earned="{{ confetti.earned if confetti else '' }}">
+<body data-confetti-earned="{{ confetti.earned if confetti else '' }}" data-confetti-message="{{ confetti.message if confetti and confetti.message else '' }}">
   {% if user %}
   <aside class="sidebar">
     <a class="brand" href="{{ url_for('dashboard') }}"><span class="logo">✦</span><span>FocusPlan</span></a>
@@ -16,14 +16,15 @@
       <a class="{{ 'active' if current_endpoint in ['tasks_page','toggle_task','toggle_subtask','edit_task'] }}" href="{{ url_for('tasks_page') }}">Задачи</a>
       <a class="{{ 'active' if current_endpoint == 'matrix' }}" href="{{ url_for('matrix') }}">Приоритеты</a>
       <a class="{{ 'active' if current_endpoint in ['focus','complete_focus'] }}" href="{{ url_for('focus') }}">Фокус</a>
+      <a class="{{ 'active' if current_endpoint in ['achievements_page','select_badge'] }}" href="{{ url_for('achievements_page') }}">Достижения</a>
     </nav>
     <a class="level-card" href="{{ url_for('profile') }}">
-      <div class="level-row"><b>Уровень {{ level }}</b><span>{{ level_progress }}/100 опыта</span></div>
+      <div class="level-row"><b>Уровень {{ level }}</b><span>{{ level_current_xp }}/{{ level_required_xp }} XP</span></div>
       <div class="progress"><i style="width: {{ level_progress }}%"></i></div>
     </a>
     <a class="sidebar-card {{ 'active-profile' if current_endpoint == 'profile' }}" href="{{ url_for('profile') }}">
-      <div class="avatar small">{{ user.avatar }}</div>
-      <div class="profile-text"><b>{{ user.nickname }}</b><p>Профиль и настройки</p></div><span class="chevron">›</span>
+      <div class="avatar small">{{ profile_avatar }}</div>
+      <div class="profile-text"><b>{{ user.nickname }}</b><p>{% if active_badge %}{{ active_badge.title }}{% else %}Профиль и настройки{% endif %}</p></div><span class="chevron">›</span>
     </a>
     <a class="logout" href="{{ url_for('logout') }}">Выйти</a>
   </aside>
@@ -32,6 +33,7 @@
     {% block content %}{% endblock %}
   </main>
   <div id="confettiLayer"></div>
+  <script id="toastData" type="application/json">{{ toasts|default([])|tojson }}</script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

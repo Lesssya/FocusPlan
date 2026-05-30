@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="topbar compact-topbar">
+  <div><h1>Достижения и бейджи</h1><p>Достижения выдаются один раз за конкретные действия, а бейджи открываются по уровню и могут стать аватаркой.</p></div>
+  <a class="btn secondary" href="{{ url_for('profile') }}">Открыть профиль</a>
+</header>
+
+<section class="achievements-layout">
+  <div class="card">
+    <div class="section-head"><h2>Достижения</h2><span>{{ unlocked_achievement_codes|length }}/{{ achievements_catalog|length }}</span></div>
+    <div class="achievement-grid">
+      {% for achievement in achievements_catalog %}
+        {% set unlocked = achievement.code in unlocked_achievement_codes %}
+        <div class="achievement-card {{ 'unlocked' if unlocked else 'locked' }}">
+          <div class="achievement-icon">{{ achievement.icon if unlocked else '🔒' }}</div>
+          <div><h3>{{ achievement.title }}</h3><p>{{ achievement.description }}</p><span>+{{ achievement.xp }} XP</span></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-head"><h2>Бейджи</h2><span>{{ available_badge_codes|length }}/{{ badges_catalog|length }}</span></div>
+    <div class="badge-grid">
+      {% for badge in badges_catalog %}
+        {% set unlocked = badge.code in available_badge_codes %}
+        <div class="badge-card {{ 'unlocked' if unlocked else 'locked' }}">
+          <div class="badge-medal">{{ badge.icon if unlocked else '🔒' }}</div>
+          <h3>{{ badge.title }}</h3>
+          <p>{{ badge.description }}</p>
+          {% if unlocked %}
+            <form method="post" action="{{ url_for('select_badge') }}">
+              <input type="hidden" name="badge_code" value="{{ badge.code }}">
+              <button class="btn {{ 'secondary' if user.selected_badge == badge.code else 'primary' }} full" type="submit">{{ 'Установлен' if user.selected_badge == badge.code else 'Поставить в профиль' }}</button>
+            </form>
+          {% else %}
+            <span class="locked-hint">Откроется с {{ badge.required_level }} уровня{% if badge.focus_sessions %} или после {{ badge.focus_sessions }} фокус-сессий{% endif %}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

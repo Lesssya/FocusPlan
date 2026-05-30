@@ -1,8 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
-<header class="topbar"><div><h1>Профиль</h1><p>Настройки без сложной регистрации и паролей.</p></div></header>
+<header class="topbar"><div><h1>Профиль</h1><p>Настройки, опыт, достижения и активный бейдж.</p></div></header>
 <section class="profile-grid">
-  <div class="card profile-card"><div class="avatar big">{{ user.avatar }}</div><h2>{{ user.nickname }}</h2><p>{{ level }} уровень · {{ user.xp }} очков опыта · серия {{ user.streak }} дней</p><div class="progress"><i style="width: {{ level_progress }}%"></i></div></div>
-  <div class="card settings-card"><h2>Настройки</h2>{% if error %}<div class="error mb">{{ error }}</div>{% endif %}<form method="post" class="form-grid"><label>Никнейм</label><input name="nickname" value="{{ user.nickname }}"><label>Аватар</label><input name="avatar" maxlength="2" value="{{ user.avatar }}"><label>Цвет интерфейса</label><select name="accent"><option value="purple" {{ 'selected' if settings.accent == 'purple' }}>Фиолетовый</option><option value="blue" {{ 'selected' if settings.accent == 'blue' }}>Синий</option><option value="green" {{ 'selected' if settings.accent == 'green' }}>Зелёный</option><option value="pink" {{ 'selected' if settings.accent == 'pink' }}>Нежно-розовый</option></select><label class="toggle"><input type="checkbox" name="notifications" {{ 'checked' if settings.notifications }}> Уведомления включены</label><button class="btn primary" type="submit">Сохранить</button></form></div>
+  <div class="card profile-card">
+    <div class="avatar big">{{ profile_avatar }}</div>
+    <h2>{{ user.nickname }}</h2>
+    <p>{{ level }} уровень · {{ user.xp }} XP · серия {{ user.streak }} дней</p>
+    {% if active_badge %}<div class="active-badge-note">Активный бейдж: {{ active_badge.icon }} {{ active_badge.title }}</div>{% endif %}
+    <div class="progress"><i style="width: {{ level_progress }}%"></i></div>
+    <p class="profile-progress-caption">{{ level_current_xp }}/{{ level_required_xp }} XP до следующего уровня</p>
+    <div class="profile-achievements-preview">
+      <h3>Открытые достижения</h3>
+      {% if unlocked_achievement_codes %}
+        <div class="mini-achievement-row">
+          {% for ach in achievements_catalog if ach.code in unlocked_achievement_codes %}<span title="{{ ach.title }}">{{ ach.icon }}</span>{% endfor %}
+        </div>
+      {% else %}
+        <p>Пока нет открытых достижений.</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="card settings-card">
+    <h2>Настройки</h2>
+    {% if error %}<div class="error mb">{{ error }}</div>{% endif %}
+    <form method="post" class="form-grid">
+      <label>Никнейм</label><input name="nickname" value="{{ user.nickname }}">
+      <label>Аватар по умолчанию</label><input name="avatar" maxlength="2" value="{{ user.avatar }}"><small>Используется, если не выбран бейдж-аватар.</small>
+      <label>Бейдж как аватар</label>
+      <select name="selected_badge">
+        <option value="">Без бейджа</option>
+        {% for badge in badges_catalog %}
+          {% if badge.code in available_badge_codes %}<option value="{{ badge.code }}" {{ 'selected' if user.selected_badge == badge.code }}>{{ badge.icon }} {{ badge.title }}</option>{% endif %}
+        {% endfor %}
+      </select>
+      <label>Цвет интерфейса</label><select name="accent"><option value="purple" {{ 'selected' if settings.accent == 'purple' }}>Фиолетовый</option><option value="blue" {{ 'selected' if settings.accent == 'blue' }}>Синий</option><option value="green" {{ 'selected' if settings.accent == 'green' }}>Зелёный</option><option value="pink" {{ 'selected' if settings.accent == 'pink' }}>Нежно-розовый</option></select>
+      <label class="toggle"><input type="checkbox" name="notifications" {{ 'checked' if settings.notifications }}> Уведомления включены</label>
+      <button class="btn primary" type="submit">Сохранить</button>
+    </form>
+  </div>
 </section>
 {% endblock %}

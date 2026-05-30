@@ -12,8 +12,8 @@
     <div class="timer-actions"><button class="btn primary" id="timerMainButton" type="button">Старт</button></div>
     <button class="btn ghost hidden" id="earlyFinishButton" type="button">Завершить раньше</button>
     <form method="post" action="{{ url_for('complete_focus') }}" id="completeFocusForm" hidden></form>
-    <p class="focus-hint">+25 очков опыта и серия дней начисляются только после полного завершения фокус-сессии.</p>
+    <p class="focus-hint">+25 XP начисляются только после полного завершения фокус-сессии.</p>
   </div>
 </section>
-<div class="modal" id="earlyFinishModal"><div class="modal-card confirm-card"><h2>Отключить таймер досрочно?</h2><p>Если выйти сейчас, очки опыта не начислятся, а фокус-сессия не будет засчитана.</p><div class="timer-actions"><button class="btn secondary" id="stayFocusButton" type="button">Остаться</button><button class="btn ghost" id="backgroundFocusButton" type="button">Продолжить в фоне</button><button class="btn ghost danger" id="leaveFocusButton" type="button">Выйти без очков</button></div></div></div>
+<div class="modal" id="earlyFinishModal"><div class="modal-card confirm-card"><h2>Завершить таймер досрочно?</h2><p>Если завершить фокус-сессию сейчас, дополнительные 25 XP не будут начислены. Продолжить сессию?</p><div class="timer-actions"><button class="btn secondary" id="stayFocusButton" type="button">Продолжить</button><button class="btn ghost danger" id="leaveFocusButton" type="button">Завершить без XP</button></div></div></div>
 {% endblock %}

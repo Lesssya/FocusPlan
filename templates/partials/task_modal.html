@@ -21,14 +21,16 @@
 
       <div class="two-cols">
         <div><label>Папка</label><select name="folder" data-task-folder>{% for folder in user.folders %}<option value="{{ folder }}">{{ folder }}</option>{% endfor %}</select><input class="mt mini-input" name="new_folder" placeholder="Или новая папка"></div>
-        <div><label>Срочность</label><select name="urgency" data-task-urgency><option value="not_urgent" selected>Не срочно</option><option value="urgent">Срочно</option></select></div>
+        <div><label>Примерное время</label><div class="estimate-row"><input type="number" min="0" name="estimate_value" placeholder="Напр. 2"><select name="estimate_unit"><option value="minutes">мин.</option><option value="hours" selected>ч.</option><option value="days">дн.</option></select></div><small>Нужно для оценки трудоёмкости</small></div>
       </div>
 
-      <div class="three-cols">
-        <div><label>Приоритет</label><select name="priority"><option value="low">Низкий</option><option value="medium" selected>Средний</option><option value="high">Высокий</option></select></div>
+      <div class="three-cols task-logic-row">
+        <div><label>Срочность</label><select name="urgency" data-task-urgency><option value="not_urgent" selected>Не срочно</option><option value="urgent">Срочно</option></select></div>
         <div><label>Важность</label><select name="importance" data-task-importance><option value="low">Низкая</option><option value="medium" selected>Средняя</option><option value="high">Высокая</option></select></div>
-        <div><label>Файл</label><label class="file-button">📎 Прикрепить файл<input type="file" name="attachment"></label></div>
+        <div><label>Автоприоритет</label><div class="auto-priority-pill medium" data-auto-priority>Средний</div><small>Рассчитывается автоматически</small></div>
       </div>
+
+      <div><label>Файл</label><label class="file-button">📎 Прикрепить файл<input type="file" name="attachment"></label></div>
 
       <button class="btn primary" type="submit">Добавить задачу</button>
     </form>

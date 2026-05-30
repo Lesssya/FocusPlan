@@ -1,8 +1,8 @@
 {
   "users": {
-    "дада": {
-      "nickname": "дада",
-      "avatar": "Д",
+    "Олеся": {
+      "nickname": "Олеся",
+      "avatar": "ОЛ",
       "settings": {
         "theme": "light",
         "accent": "purple",
@@ -44,7 +44,7 @@
           "priority": "high",
           "importance": "high",
           "urgency": "urgent",
-          "xp": 70,
+          "xp": 35,
           "date": "2026-05-20",
           "time": "09:23",
           "folder": "Учёба",
@@ -58,7 +58,9 @@
           "done": false,
           "earned_xp": 0,
           "created_at": "2026-05-18T20:22:52",
-          "completed_at": null
+          "completed_at": null,
+          "estimate_value": "",
+          "estimate_unit": "hours"
         },
         {
           "id": "6e891ff7-cfee-469a-9083-bbd6fa4ee407",
@@ -68,7 +70,7 @@
           "priority": "low",
           "importance": "low",
           "urgency": "not_urgent",
-          "xp": 10,
+          "xp": 12,
           "date": "",
           "time": "",
           "folder": "Учёба",
@@ -76,17 +78,19 @@
           "done": false,
           "earned_xp": 0,
           "created_at": "2026-05-18T20:28:11",
-          "completed_at": null
+          "completed_at": null,
+          "estimate_value": "",
+          "estimate_unit": "hours"
         },
         {
           "id": "3a47f8d6-1bce-4a94-b9ab-994beea92651",
           "title": "Задача на сегодня",
           "description": "папка работа",
           "subtasks": [],
-          "priority": "high",
+          "priority": "low",
           "importance": "medium",
           "urgency": "not_urgent",
-          "xp": 40,
+          "xp": 15,
           "date": "2026-05-18",
           "time": "22:28",
           "folder": "Работа",
@@ -94,7 +98,9 @@
           "done": true,
           "earned_xp": 40,
           "created_at": "2026-05-18T20:30:30",
-          "completed_at": "2026-05-18T20:33:02"
+          "completed_at": "2026-05-18T20:33:02",
+          "estimate_value": "",
+          "estimate_unit": "hours"
         },
         {
           "id": "8a293987-35fd-4455-9ada-38235abe581c",
@@ -123,7 +129,9 @@
           "done": false,
           "earned_xp": 0,
           "created_at": "2026-05-18T20:31:22",
-          "completed_at": null
+          "completed_at": null,
+          "estimate_value": "",
+          "estimate_unit": "hours"
         },
         {
           "id": "9d6e3008-5e7c-4cbb-84c2-5b4310c1ee7e",
@@ -133,7 +141,7 @@
           "priority": "medium",
           "importance": "low",
           "urgency": "urgent",
-          "xp": 35,
+          "xp": 22,
           "date": "2026-05-19",
           "time": "",
           "folder": "Учёба",
@@ -141,17 +149,19 @@
           "done": false,
           "earned_xp": 0,
           "created_at": "2026-05-18T20:32:58",
-          "completed_at": null
+          "completed_at": null,
+          "estimate_value": "",
+          "estimate_unit": "hours"
         },
         {
           "id": "0e1c7b96-9f49-479f-a2c2-26d013e05e12",
           "title": "задачка - сделать сейчас",
           "description": "",
           "subtasks": [],
-          "priority": "medium",
+          "priority": "high",
           "importance": "high",
           "urgency": "urgent",
-          "xp": 60,
+          "xp": 30,
           "date": "",
           "time": "",
           "folder": "Учёба",
@@ -159,17 +169,19 @@
           "done": false,
           "earned_xp": 0,
           "created_at": "2026-05-18T20:36:33",
-          "completed_at": null
+          "completed_at": null,
+          "estimate_value": "",
+          "estimate_unit": "hours"
         },
         {
           "id": "e272caa4-c306-415d-83ae-e1cad850a3b3",
           "title": "сделать срочно!",
           "description": "",
           "subtasks": [],
-          "priority": "medium",
+          "priority": "high",
           "importance": "high",
           "urgency": "urgent",
-          "xp": 60,
+          "xp": 30,
           "date": "",
           "time": "",
           "folder": "Учёба",
@@ -177,17 +189,19 @@
           "done": false,
           "earned_xp": 0,
           "created_at": "2026-05-18T20:36:41",
-          "completed_at": null
+          "completed_at": null,
+          "estimate_value": "",
+          "estimate_unit": "hours"
         },
         {
           "id": "122ef166-fb8c-4d71-a239-88f8899bc31d",
           "title": "сделать очень срочно",
           "description": "",
           "subtasks": [],
-          "priority": "medium",
+          "priority": "high",
           "importance": "high",
           "urgency": "urgent",
-          "xp": 60,
+          "xp": 30,
           "date": "",
           "time": "",
           "folder": "Учёба",
@@ -195,13 +209,318 @@
           "done": false,
           "earned_xp": 0,
           "created_at": "2026-05-18T20:36:49",
-          "completed_at": null
+          "completed_at": null,
+          "estimate_value": "",
+          "estimate_unit": "hours"
+        },
+        {
+          "id": "5dd8ac7d-d4ca-4008-9caf-50f18fd85f7a",
+          "title": "Сходить в магазин",
+          "description": "",
+          "subtasks": [
+            {
+              "id": "fc92117d-26c5-445a-bad7-e498baebc1ef",
+              "title": "купить помидоры",
+              "done": false
+            },
+            {
+              "id": "09d633d8-c5a2-4018-9407-a2dd0cd0b40c",
+              "title": "купить оливки",
+              "done": false
+            },
+            {
+              "id": "9e52b0e3-bd6b-493b-a465-a5963602a092",
+              "title": "купить майонез",
+              "done": false
+            }
+          ],
+          "priority": "low",
+          "importance": "low",
+          "urgency": "not_urgent",
+          "xp": 17,
+          "date": "2026-05-30",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Личное",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-30T18:02:22"
         }
       ],
-      "xp": 105,
+      "xp": 120,
       "streak": 1,
-      "last_activity": "2026-05-18",
-      "created_at": "2026-05-18T20:20:27"
+      "last_activity": "2026-05-30",
+      "created_at": "2026-05-18T20:20:27",
+      "achievements": [
+        {
+          "code": "first_task",
+          "received_at": "2026-05-30T18:03:33"
+        }
+      ],
+      "focus_sessions": 0,
+      "selected_badge": "newbie"
+    },
+    "Алина": {
+      "nickname": "Алина",
+      "avatar": "А",
+      "settings": {
+        "theme": "light",
+        "accent": "pink",
+        "notifications": true
+      },
+      "folders": [
+        "Учёба",
+        "Работа",
+        "Личное"
+      ],
+      "tasks": [
+        {
+          "id": "cf96f667-fc5f-42c8-beab-d650d4dd7f44",
+          "title": "Встреча по проекту",
+          "description": "Встретиться с менеджером для обсуждения задач",
+          "subtasks": [],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 30,
+          "date": "2026-06-01",
+          "time": "12:10",
+          "estimate_value": "2",
+          "estimate_unit": "hours",
+          "folder": "Работа",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-30T18:11:04",
+          "completed_at": null
+        },
+        {
+          "id": "c5a39d0c-c121-4098-ba7c-879e7f766b67",
+          "title": "Выгулять собаку",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "medium",
+          "urgency": "urgent",
+          "xp": 25,
+          "date": "2026-05-30",
+          "time": "19:11",
+          "estimate_value": "1",
+          "estimate_unit": "hours",
+          "folder": "Личное",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 25,
+          "created_at": "2026-05-30T18:11:51",
+          "completed_at": "2026-05-30T18:12:42"
+        },
+        {
+          "id": "8aa2a075-3230-42e9-9494-ec612cfa4930",
+          "title": "1",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:02",
+          "completed_at": "2026-05-30T18:14:28"
+        },
+        {
+          "id": "b76f8893-560d-4560-82cd-bde56c3aa5e0",
+          "title": "2",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:05",
+          "completed_at": "2026-05-30T18:14:29"
+        },
+        {
+          "id": "b77383ff-cf49-4e0d-ac77-e093e612de90",
+          "title": "3",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:07",
+          "completed_at": "2026-05-30T18:14:30"
+        },
+        {
+          "id": "ac78ee14-6ff1-4854-a6c0-26bf5ed78cde",
+          "title": "4",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:10",
+          "completed_at": "2026-05-30T18:14:31"
+        },
+        {
+          "id": "0e43bf99-8bec-427f-91bd-fdf6fd35fd1a",
+          "title": "5",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:13",
+          "completed_at": "2026-05-30T18:14:32"
+        },
+        {
+          "id": "73483be5-93b8-4150-9702-919fd7b76787",
+          "title": "6",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:16",
+          "completed_at": "2026-05-30T18:14:32"
+        },
+        {
+          "id": "3733f5b9-9d8d-462a-8de5-acc5e5554ea8",
+          "title": "7",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:19",
+          "completed_at": "2026-05-30T18:14:33"
+        },
+        {
+          "id": "344f4909-0105-4b92-ae3d-eb42922ecfe5",
+          "title": "8",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:23",
+          "completed_at": "2026-05-30T18:14:34"
+        },
+        {
+          "id": "beb8c904-d7b1-47c9-975f-b7826ffdde28",
+          "title": "9",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-30T18:14:26",
+          "completed_at": "2026-05-30T18:14:35"
+        }
+      ],
+      "xp": 230,
+      "streak": 1,
+      "last_activity": "2026-05-30",
+      "achievements": [
+        {
+          "code": "first_task",
+          "received_at": "2026-05-30T18:12:42"
+        },
+        {
+          "code": "productive_day",
+          "received_at": "2026-05-30T18:14:31"
+        },
+        {
+          "code": "new_level",
+          "received_at": "2026-05-30T18:14:31"
+        },
+        {
+          "code": "ten_tasks",
+          "received_at": "2026-05-30T18:14:35"
+        }
+      ],
+      "focus_sessions": 0,
+      "selected_badge": "newbie",
+      "created_at": "2026-05-30T18:09:40"
     }
   }
 }
