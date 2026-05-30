@@ -29,3 +29,6 @@
 .quadrant-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
 .quadrant-head>div{min-width:0;}
 .quadrant-head .quad-add{width:auto!important;min-width:unset!important;max-width:max-content!important;height:32px!important;padding:6px 12px!important;border-radius:999px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;white-space:nowrap!important;font-size:13px!important;font-weight:800!important;line-height:18px!important;}
+
+/* Smaller task description textarea in create/edit task forms */
+.task-description-input{min-height:58px!important;height:68px!important;resize:vertical;}

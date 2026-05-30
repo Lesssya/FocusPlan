@@ -3,11 +3,11 @@
     <button class="icon-btn modal-close" data-modal-close type="button">×</button>
     <h2>Новая задача</h2>
     <form method="post" action="{{ url_for('add_task') }}" class="form-grid">
-      <label>Название задачи *</label>
+      <label>Название задачи</label>
       <input name="title" placeholder="Например, написать параграф 2.3" required>
 
       <label>Описание задачи</label>
-      <textarea name="description" placeholder="Кратко опишите, что нужно сделать"></textarea>
+      <textarea class="task-description-input" name="description" rows="2" placeholder="Кратко опишите, что нужно сделать"></textarea>
 
       <label>Подпункты</label>
       <div class="subtask-editor" data-subtask-editor>

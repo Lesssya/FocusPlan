@@ -128,7 +128,7 @@ def normalize_user(user: Dict[str, Any]) -> Dict[str, Any]:
         task.setdefault("description", "")
         task.setdefault("subtasks", [])
         task.setdefault("attachments", [])
-        task.setdefault("folder", "Учёба")
+        task.setdefault("folder", "")
         task.setdefault("importance", "medium")
         task.setdefault("urgency", "not_urgent")
         task["priority"] = calculate_priority(task.get("importance", "medium"), task.get("urgency", "not_urgent"))
@@ -469,7 +469,7 @@ def task_from_form(task_id: str, existing: Dict[str, Any] | None = None) -> Dict
         "time": request.form.get("time") or "",
         "estimate_value": request.form.get("estimate_value", "").strip(),
         "estimate_unit": request.form.get("estimate_unit", "hours"),
-        "folder": request.form.get("new_folder", "").strip() or request.form.get("folder", "Учёба") or "Учёба",
+        "folder": request.form.get("new_folder", "").strip() or request.form.get("folder", "").strip(),
         "attachments": attachments,
         "done": bool((existing or {}).get("done", False)),
         "earned_xp": int((existing or {}).get("earned_xp", 0)),

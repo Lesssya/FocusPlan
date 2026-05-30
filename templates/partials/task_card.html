@@ -50,8 +50,8 @@
     <button class="icon-btn modal-close" data-modal-close type="button">×</button>
     <h2>Редактировать задачу</h2>
     <form method="post" action="{{ url_for('edit_task', task_id=task.id) }}" class="form-grid">
-      <label>Название задачи *</label><input name="title" value="{{ task.title }}" required>
-      <label>Описание задачи</label><textarea name="description">{{ task.description }}</textarea>
+      <label>Название задачи</label><input name="title" value="{{ task.title }}" required>
+      <label>Описание задачи</label><textarea class="task-description-input" name="description" rows="2">{{ task.description }}</textarea>
       <label>Подпункты</label>
       <div class="subtask-editor" data-subtask-editor>
         {% for subtask in task.subtasks %}<div class="subtask-input-row"><input name="subtask_items" value="{{ subtask.title }}"><button class="icon-btn" type="button" data-remove-subtask>×</button></div>{% endfor %}
