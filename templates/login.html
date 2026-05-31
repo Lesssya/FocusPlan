@@ -2,9 +2,11 @@
 {% block content %}
 <section class="login-shell">
   <div class="login-card">
-    <div class="login-illustration">🍅</div>
+  <div class="login-illustration owl-login">
+    <img src="{{ url_for('static', filename='img/owl-login.png') }}" alt="Маскот FocusPlan">
+  </div>
     <h1>Планируй проще</h1>
-    <p>Электронный планер с фокус-сессиями, приоритетами и системой серии дней без сложной регистрации.</p>
+    <p>Электронный планер с фокус-сессиями, приоритетами и системой геймификации!</p>
     <form method="post" class="login-form">
       <label>Никнейм</label>
       <input name="nickname" placeholder="Например, Olesya" autocomplete="username" required>

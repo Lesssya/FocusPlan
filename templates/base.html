@@ -9,7 +9,11 @@
 <body data-confetti-earned="{{ confetti.earned if confetti else '' }}" data-confetti-message="{{ confetti.message if confetti and confetti.message else '' }}" data-notifications-enabled="{{ '1' if notifications_enabled|default(true) else '0' }}">
   {% if user %}
   <aside class="sidebar">
-    <a class="brand" href="{{ url_for('dashboard') }}"><span class="logo">✦</span><span>FocusPlan</span></a>
+    <a class="brand" href="{{ url_for('dashboard') }}">
+      <span class="logo">
+          <img src="{{ url_for('static', filename='img/logo-owl-2.png') }}" alt="FocusPlan">
+      </span>
+      <span>FocusPlan</span></a>
     <nav class="menu">
       <a class="{{ 'active' if current_endpoint == 'dashboard' }}" href="{{ url_for('dashboard') }}">Главная</a>
       <a class="{{ 'active' if current_endpoint == 'calendar' }}" href="{{ url_for('calendar') }}">Календарь</a>

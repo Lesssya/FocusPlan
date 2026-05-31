@@ -23,7 +23,9 @@
 
   <div class="card focus-preview">
     <h2>Фокус на сегодня</h2>
-    <div class="mascot">🦉</div>
+    <div class="focus-preview-image">
+      <img src="{{ url_for('static', filename='img/focus-owl-3.png') }}" alt="Фокус-сессия с маскотом">
+    </div>
     <p>Запусти фокус-сессию на 25 минут и получи +25 XP.</p>
     <a class="btn primary full" href="{{ url_for('focus') }}">Начать фокус</a>
   </div>
