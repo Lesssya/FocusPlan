@@ -294,7 +294,7 @@
           "done": true,
           "earned_xp": 30,
           "created_at": "2026-05-30T18:11:04",
-          "completed_at": "2026-05-30T21:16:45"
+          "completed_at": "2026-05-31T01:33:05"
         },
         {
           "id": "c5a39d0c-c121-4098-ba7c-879e7f766b67",
@@ -311,9 +311,10 @@
           "estimate_unit": "hours",
           "folder": "Личное",
           "attachments": [],
-          "done": false,
-          "earned_xp": 0,
-          "created_at": "2026-05-30T18:11:51"
+          "done": true,
+          "earned_xp": 25,
+          "created_at": "2026-05-30T18:11:51",
+          "completed_at": "2026-05-31T01:33:59"
         },
         {
           "id": "8aa2a075-3230-42e9-9494-ec612cfa4930",
@@ -494,9 +495,29 @@
           "earned_xp": 15,
           "created_at": "2026-05-30T18:14:26",
           "completed_at": "2026-05-30T18:14:35"
+        },
+        {
+          "id": "a18e79e5-64a9-4b3a-9237-29f2927d11ee",
+          "title": "убрать баги",
+          "description": "",
+          "subtasks": [],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 30,
+          "date": "2026-05-31",
+          "time": "01:37",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 30,
+          "created_at": "2026-05-31T01:35:19",
+          "completed_at": "2026-05-31T15:16:00"
         }
       ],
-      "xp": 295,
+      "xp": 375,
       "streak": 2,
       "last_activity": "2026-05-31",
       "achievements": [
@@ -525,9 +546,176 @@
           "received_at": "2026-05-31T00:43:32"
         }
       ],
-      "focus_sessions": 1,
+      "focus_sessions": 2,
       "selected_badge": "newbie",
       "created_at": "2026-05-30T18:09:40"
+    },
+    "Руслана": {
+      "nickname": "Руслана",
+      "avatar": "Р",
+      "settings": {
+        "theme": "light",
+        "accent": "green",
+        "notifications": true
+      },
+      "folders": [
+        "Учёба",
+        "Работа",
+        "Личное"
+      ],
+      "tasks": [
+        {
+          "id": "e26b6e13-740a-4342-a4a3-ed90f70a196c",
+          "title": "Встреча по проекту с ПМ",
+          "description": "Обсуждение с ПМ по проекту",
+          "subtasks": [
+            {
+              "id": "767b59cf-1234-4bbd-8710-41bd8e8b9a30",
+              "title": "Построение БМ",
+              "done": true
+            },
+            {
+              "id": "9b3d6ee1-33df-4779-8670-83236a92684a",
+              "title": "Обсуждение проецессов",
+              "done": false
+            }
+          ],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 35,
+          "date": "2026-05-31",
+          "time": "15:15",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Работа",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 35,
+          "created_at": "2026-05-31T13:59:34",
+          "completed_at": "2026-05-31T14:09:30"
+        },
+        {
+          "id": "cdfbc5d7-85cb-424e-aa95-b9c18e4ad7f7",
+          "title": "Квартальный отчет",
+          "description": "Сдать квартальный отчет",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "high",
+          "urgency": "not_urgent",
+          "xp": 20,
+          "date": "2026-05-31",
+          "time": "18:00",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Работа",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 20,
+          "created_at": "2026-05-31T14:00:14",
+          "completed_at": "2026-05-31T14:09:15"
+        },
+        {
+          "id": "a2e342b0-889a-4981-babf-7b967b15429c",
+          "title": "Приготовить ужин",
+          "description": "Найти рецепт и приготовить ужин",
+          "subtasks": [
+            {
+              "id": "56a7f5d7-046f-4395-9531-2b1268e3d08e",
+              "title": "Найти рецепт",
+              "done": false
+            },
+            {
+              "id": "5bc599cb-1236-44bb-9379-8132ebfd1843",
+              "title": "Сходить в магазин",
+              "done": false
+            },
+            {
+              "id": "bc3696d8-0b4c-4018-9c59-fa704ff8a9c5",
+              "title": "Приготовить ужин",
+              "done": false
+            }
+          ],
+          "priority": "low",
+          "importance": "low",
+          "urgency": "not_urgent",
+          "xp": 17,
+          "date": "2026-05-31",
+          "time": "19:05",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Личное",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 17,
+          "created_at": "2026-05-31T14:01:29",
+          "completed_at": "2026-05-31T14:09:10"
+        },
+        {
+          "id": "86e6172a-daed-4ead-9ab0-574be9982728",
+          "title": "Погулять с собакой",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Личное",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-31T14:02:47",
+          "completed_at": "2026-05-31T14:10:00"
+        },
+        {
+          "id": "c6cc6c88-4341-4d75-9acd-989c0d156843",
+          "title": "Составить список для ремонта балкона",
+          "description": "составить список материалов и съездить в магазин",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "low",
+          "urgency": "urgent",
+          "xp": 22,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Личное",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 22,
+          "created_at": "2026-05-31T14:04:12",
+          "completed_at": "2026-05-31T14:04:30"
+        }
+      ],
+      "xp": 174,
+      "streak": 1,
+      "last_activity": "2026-05-31",
+      "achievements": [
+        {
+          "code": "first_task",
+          "received_at": "2026-05-31T14:04:30"
+        },
+        {
+          "code": "urgent_important",
+          "received_at": "2026-05-31T14:09:30"
+        },
+        {
+          "code": "new_level",
+          "received_at": "2026-05-31T14:09:30"
+        },
+        {
+          "code": "productive_day",
+          "received_at": "2026-05-31T14:10:00"
+        }
+      ],
+      "focus_sessions": 0,
+      "selected_badge": "newbie",
+      "created_at": "2026-05-31T13:56:42"
     }
   }
 }

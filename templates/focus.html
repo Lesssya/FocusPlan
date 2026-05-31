@@ -5,13 +5,19 @@
     <div class="focus-top"><a href="{{ url_for('dashboard') }}" id="focusBackLink">← Назад</a><span>Фокус-сессия</span></div>
     <h1>Фокусируйся на важном</h1>
     <select id="focusTask">
-      {% for task in active_tasks %}<option>{{ task.title }}</option>{% endfor %}
-      {% if not active_tasks %}<option>Свободная фокус-сессия</option>{% endif %}
+      <option value="" selected>Без привязки к задаче</option>
+
+      {% for task in active_tasks %}
+        <option value="{{ task.id }}">{{ task.title }}</option>
+      {% endfor %}
     </select>
     <div class="timer-shell" id="timerShell" style="--timer-progress:0deg"><div class="timer" id="timer">25:00</div></div>
     <div class="timer-actions"><button class="btn primary" id="timerMainButton" type="button">Старт</button></div>
     <button class="btn ghost hidden" id="earlyFinishButton" type="button">Завершить раньше</button>
-    <form method="post" action="{{ url_for('complete_focus') }}" id="completeFocusForm" hidden></form>
+    <form method="post" action="{{ url_for('complete_focus') }}" id="completeFocusForm" hidden>
+      <input type="hidden" name="focus_task_id" id="focusTaskIdInput" value="">
+      <input type="hidden" name="complete_task" id="completeTaskInput" value="0">
+    </form>
     <p class="focus-hint">+25 XP начисляются только после полного завершения фокус-сессии.</p>
   </div>
 </section>
