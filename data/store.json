@@ -531,9 +531,10 @@
           "estimate_unit": "hours",
           "folder": "",
           "attachments": [],
-          "done": false,
-          "earned_xp": 0,
-          "created_at": "2026-05-31T17:15:29"
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-31T17:15:29",
+          "completed_at": "2026-05-31T18:13:04"
         },
         {
           "id": "b5a88d10-14a3-4fba-abcc-8b3d4faf0b6e",
@@ -582,7 +583,7 @@
           "completed_at": "2026-05-31T17:22:48"
         }
       ],
-      "xp": 420,
+      "xp": 435,
       "streak": 2,
       "last_activity": "2026-05-31",
       "achievements": [
@@ -781,6 +782,152 @@
       "focus_sessions": 0,
       "selected_badge": "newbie",
       "created_at": "2026-05-31T13:56:42"
+    },
+    "новый": {
+      "nickname": "новый",
+      "avatar": "Н",
+      "settings": {
+        "theme": "light",
+        "accent": "purple",
+        "notifications": true
+      },
+      "folders": [
+        "Учёба",
+        "Работа",
+        "Личное"
+      ],
+      "tasks": [
+        {
+          "id": "12051315-9422-4090-bdfe-bd580db6dc6d",
+          "title": "новая задача",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-31T18:13:32",
+          "completed_at": "2026-05-31T18:13:34"
+        },
+        {
+          "id": "4d125a75-925f-4935-9079-28beac966764",
+          "title": "Сходить в магазин",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "2026-05-31",
+          "time": "18:16",
+          "estimate_value": "1",
+          "estimate_unit": "minutes",
+          "folder": "",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-31T18:14:10"
+        },
+        {
+          "id": "e3a9b8a4-0fa8-483d-a113-e069f350305d",
+          "title": "Квартальный отчет",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "2026-05-31",
+          "time": "18:18",
+          "estimate_value": "2",
+          "estimate_unit": "minutes",
+          "folder": "",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-31T18:16:21"
+        },
+        {
+          "id": "7745ac34-5a1b-4bcf-a94a-d92cc34bed08",
+          "title": "Сделать проект MVP",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "2026-05-31",
+          "time": "18:20",
+          "estimate_value": "5",
+          "estimate_unit": "minutes",
+          "folder": "",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-31T18:18:51",
+          "completed_at": null
+        },
+        {
+          "id": "c72c4565-4829-4390-bbf6-bace62401278",
+          "title": "Сделать проект MVP",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "2026-05-31",
+          "time": "10:00",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-05-31T18:19:04",
+          "completed_at": "2026-05-31T18:21:03"
+        },
+        {
+          "id": "b2f0a64f-5f1c-4e94-98e7-c9aa1bc2a22f",
+          "title": "Сходить в магазин",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "2026-05-31",
+          "time": "21:00",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-31T18:19:12",
+          "completed_at": null
+        }
+      ],
+      "xp": 40,
+      "streak": 1,
+      "last_activity": "2026-05-31",
+      "achievements": [
+        {
+          "code": "first_task",
+          "received_at": "2026-05-31T18:13:34"
+        }
+      ],
+      "focus_sessions": 0,
+      "selected_badge": null,
+      "created_at": "2026-05-31T18:13:15"
     }
   }
 }

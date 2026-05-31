@@ -192,3 +192,50 @@
 .completed-task-list .task-description {
     text-align: left;
 }
+
+/* Softer notification styles */
+.toast{
+  right:auto;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  min-width:320px;
+  max-width:min(560px, calc(100vw - 32px));
+  padding:16px 20px;
+  border-radius:20px;
+  border:1px solid rgba(124,92,255,.14);
+  background:linear-gradient(135deg,#ffffff 0%,#f7f3ff 100%);
+  color:#2b2452;
+  box-shadow:0 18px 42px rgba(35,35,70,.14);
+  font-weight:800;
+}
+.toast::before{
+  display:inline-grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  margin-right:10px;
+  border-radius:50%;
+  background:rgba(124,92,255,.12);
+  color:var(--accent);
+  font-size:18px;
+  vertical-align:middle;
+}
+.info-toast{
+  border-color:#f3dcc2;
+  background:linear-gradient(135deg,#fffaf3 0%,#fff2df 100%);
+  color:#7a5630;
+}
+.info-toast::before{
+  content:"🔔";
+  background:#ffe8bf;
+  color:#c88a23;
+}
+@media(max-width:760px){
+  .toast{
+    min-width:auto;
+    width:calc(100vw - 24px);
+    padding:14px 16px;
+    border-radius:18px;
+  }
+}

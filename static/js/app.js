@@ -172,8 +172,14 @@ function pauseTimer(){
   renderTimer();
 }
 function hasActiveFocusSession(){
-  const state=getFocusState();
-  return Boolean(state && state.started && calculateSecondsFromState(state)>0);
+  const state = getFocusState();
+
+  return Boolean(
+    state &&
+    state.started &&
+    state.running &&
+    calculateSecondsFromState(state) > 0
+  );
 }
 function askEarlyFinish(event, href=null){
   if(hasActiveFocusSession()){
@@ -220,33 +226,162 @@ if(keepTaskInProgressButton){keepTaskInProgressButton.addEventListener('click',(
 renderTimer();
 setInterval(()=>{if(timerElement){renderTimer()}},1000);
 
+function showToast(message, type='info', duration=4600){
+  if(!message)return;
+
+  const toast=document.createElement('div');
+  toast.className=`toast ${type}-toast`;
+
+  const icon=document.createElement('span');
+  icon.className='toast-icon';
+  icon.textContent=type==='reminder' ? '🔔' : (type==='achievement' ? '⭐' : '✦');
+
+  const text=document.createElement('span');
+  text.className='toast-text';
+  text.textContent=message;
+
+  toast.appendChild(icon);
+  toast.appendChild(text);
+  document.body.appendChild(toast);
+
+  setTimeout(()=>toast.classList.add('show'), 20);
+  setTimeout(()=>{
+    toast.classList.remove('show');
+    setTimeout(()=>toast.remove(), 260);
+  }, duration);
+}
+
 function launchConfetti(earned, message){
   const layer=document.getElementById('confettiLayer');
-  if(!layer)return;
-  const colors=['#7c5cff','#22a06b','#ec72a7','#ffb020','#3b82f6','#ff5b5b'];
-  for(let i=0;i<90;i++){
-    const piece=document.createElement('div');
-    piece.className='confetti-piece';
-    piece.style.left=Math.random()*100+'vw';
-    piece.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
-    piece.style.animationDelay=Math.random()*0.3+'s';
-    piece.style.transform=`rotate(${Math.random()*360}deg)`;
-    layer.appendChild(piece);
-    setTimeout(()=>piece.remove(),2100);
+  if(layer){
+    const colors=['#7c5cff','#22a06b','#ec72a7','#ffb020','#3b82f6','#ff5b5b'];
+    for(let i=0;i<90;i++){
+      const piece=document.createElement('div');
+      piece.className='confetti-piece';
+      piece.style.left=Math.random()*100+'vw';
+      piece.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+      piece.style.animationDelay=Math.random()*0.3+'s';
+      piece.style.transform=`rotate(${Math.random()*360}deg)`;
+      layer.appendChild(piece);
+      setTimeout(()=>piece.remove(),2100);
+    }
   }
-  const toast=document.createElement('div');
-  toast.className='toast';
-  toast.textContent=message||`Задача выполнена! +${earned} очков опыта`;
-  document.body.appendChild(toast);
-  setTimeout(()=>toast.remove(),2600);
+
+  showToast(message||`Задача выполнена! +${earned} XP`, 'achievement', 5200);
 }
 
 function launchToast(message){
-  const toast=document.createElement('div');
-  toast.className='toast info-toast';
-  toast.textContent=message;
-  document.body.appendChild(toast);
-  setTimeout(()=>toast.remove(),3200);
+  const type=String(message||'').startsWith('Достижение') ? 'achievement' : 'info';
+  showToast(message, type, 4800);
+}
+
+function parseTaskDateTime(task){
+  if(!task || !task.date)return null;
+  const dateParts=String(task.date).split('-').map(Number);
+  if(dateParts.length!==3 || dateParts.some(Number.isNaN))return null;
+
+  const timeValue=task.time || '09:00';
+  const timeParts=String(timeValue).split(':').map(Number);
+  const hours=Number.isFinite(timeParts[0]) ? timeParts[0] : 9;
+  const minutes=Number.isFinite(timeParts[1]) ? timeParts[1] : 0;
+
+  return new Date(dateParts[0], dateParts[1]-1, dateParts[2], hours, minutes, 0, 0);
+}
+
+function estimateToMilliseconds(task){
+  const value=parseFloat(String(task.estimate_value||'').replace(',', '.'));
+  if(!Number.isFinite(value) || value<=0)return 0;
+
+  const unit=task.estimate_unit || 'hours';
+  if(unit==='minutes')return value*60*1000;
+  if(unit==='days')return value*24*60*60*1000;
+  return value*60*60*1000;
+}
+
+function alreadyShownReminder(key){
+  try{return localStorage.getItem(key)==='1'}catch(e){return false}
+}
+
+function markReminderShown(key){
+  try{localStorage.setItem(key, '1')}catch(e){}
+}
+
+function reminderKey(task, stage){
+  return `focusplan-reminder-${task.id}-${task.date}-${task.time||'day'}-${stage}`;
+}
+
+function maybeShowReminder(task, stage, message, delayIndex=0){
+  const key=reminderKey(task, stage);
+  if(alreadyShownReminder(key))return;
+
+  markReminderShown(key);
+  setTimeout(()=>showToast(message, 'reminder', 6200), 600 + delayIndex*700);
+}
+
+function checkTaskReminders(){
+  if(document.body.dataset.notificationsEnabled==='0')return;
+
+  const dataNode=document.getElementById('reminderTasksData');
+  if(!dataNode)return;
+
+  let tasks=[];
+  try{tasks=JSON.parse(dataNode.textContent||'[]')}catch(e){tasks=[]}
+  if(!Array.isArray(tasks) || !tasks.length)return;
+
+  const now=new Date();
+  const todayString=[
+    now.getFullYear(),
+    String(now.getMonth()+1).padStart(2,'0'),
+    String(now.getDate()).padStart(2,'0')
+  ].join('-');
+
+  const dayTasks=[];
+  let notificationIndex=0;
+
+  tasks.forEach((task)=>{
+    if(!task || !task.date)return;
+
+    const title=task.title || 'Задача';
+
+    if(!task.time){
+      if(task.date===todayString){
+        dayTasks.push(task);
+      }
+      return;
+    }
+
+    const deadline=parseTaskDateTime(task);
+    if(!deadline)return;
+
+    const diff=deadline.getTime()-now.getTime();
+    const estimateMs=estimateToMilliseconds(task);
+
+    if(estimateMs>0){
+      const startAt=deadline.getTime()-estimateMs;
+      if(now.getTime()>=startAt && now.getTime()<deadline.getTime()){
+        maybeShowReminder(task, 'start', `Пора начать задачу: «${title}»`, notificationIndex++);
+      }
+    }
+
+    if(diff>0 && diff<=15*60*1000){
+      maybeShowReminder(task, 'soon', `Скоро время задачи: «${title}»`, notificationIndex++);
+    }
+
+    if(diff<0){
+      maybeShowReminder(task, 'unfinished', `У вас есть незавершённая задача: «${title}»`, notificationIndex++);
+    }
+  });
+
+  if(dayTasks.length){
+    const key=`focusplan-reminder-day-${todayString}-${dayTasks.map((task)=>task.id).join('-')}`;
+    if(!alreadyShownReminder(key)){
+      markReminderShown(key);
+      const message=dayTasks.length===1
+        ? `Сегодня у вас запланирована задача: «${dayTasks[0].title || 'Задача'}»`
+        : `Сегодня у вас запланировано ${dayTasks.length} задач без точного времени`;
+      setTimeout(()=>showToast(message, 'reminder', 6200), 600 + notificationIndex*700);
+    }
+  }
 }
 
 const earned=document.body.dataset.confettiEarned;
@@ -255,8 +390,11 @@ if(earned){launchConfetti(earned, confettiMessage || undefined)}
 try{
   const toastData=document.getElementById('toastData');
   const messages=toastData ? JSON.parse(toastData.textContent||'[]') : [];
-  messages.forEach((message,index)=>setTimeout(()=>launchToast(message), 250+index*450));
+  messages.forEach((message,index)=>setTimeout(()=>launchToast(message), 250+index*550));
 }catch(e){}
+
+checkTaskReminders();
+setInterval(checkTaskReminders, 60*1000);
 
 
 function openTaskModalWithDateTime(dateValue, timeValue){

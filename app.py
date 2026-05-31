@@ -354,6 +354,25 @@ def find_task(user: Dict[str, Any], task_id: str) -> Dict[str, Any] | None:
     return None
 
 
+
+def build_reminder_tasks(user: Dict[str, Any]) -> List[Dict[str, Any]]:
+    reminder_tasks = []
+
+    for task in user.get("tasks", []):
+        if task.get("done") or not task.get("date"):
+            continue
+
+        reminder_tasks.append({
+            "id": task.get("id"),
+            "title": task.get("title", "Задача"),
+            "date": task.get("date", ""),
+            "time": task.get("time", ""),
+            "estimate_value": task.get("estimate_value", ""),
+            "estimate_unit": task.get("estimate_unit", "hours"),
+        })
+
+    return reminder_tasks
+
 def complete_task_with_rewards(user: Dict[str, Any], task: Dict[str, Any]) -> int:
     if not task or task.get("done"):
         return 0
@@ -399,6 +418,8 @@ def inject_user_data():
         "profile_avatar": active_badge["icon"] if active_badge else user.get("avatar", "F"),
         "confetti": session.pop("confetti", None),
         "toasts": session.pop("toasts", []),
+        "reminder_tasks": build_reminder_tasks(user) if settings.get("notifications", True) else [],
+        "notifications_enabled": bool(settings.get("notifications", True)),
     })
     return base
 

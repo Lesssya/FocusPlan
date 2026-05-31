@@ -6,7 +6,7 @@
   <title>FocusPlan</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body data-confetti-earned="{{ confetti.earned if confetti else '' }}" data-confetti-message="{{ confetti.message if confetti and confetti.message else '' }}">
+<body data-confetti-earned="{{ confetti.earned if confetti else '' }}" data-confetti-message="{{ confetti.message if confetti and confetti.message else '' }}" data-notifications-enabled="{{ '1' if notifications_enabled|default(true) else '0' }}">
   {% if user %}
   <aside class="sidebar">
     <a class="brand" href="{{ url_for('dashboard') }}"><span class="logo">✦</span><span>FocusPlan</span></a>
@@ -34,6 +34,7 @@
   </main>
   <div id="confettiLayer"></div>
   <script id="toastData" type="application/json">{{ toasts|default([])|tojson }}</script>
+  <script id="reminderTasksData" type="application/json">{{ reminder_tasks|default([])|tojson }}</script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
