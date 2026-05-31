@@ -95,3 +95,32 @@
   margin-top:8px;
   color:var(--muted);
 }
+
+/* Subtask buttons: accent plus and red delete hover */
+.subtask-input-row button[data-add-subtask],
+.subtask-input-row .icon-btn[data-add-subtask] {
+    color: var(--accent);
+    border-color: var(--border);
+    background: var(--surface);
+}
+
+.subtask-input-row button[data-add-subtask]:hover,
+.subtask-input-row .icon-btn[data-add-subtask]:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.subtask-input-row button[data-remove-subtask],
+.subtask-input-row .icon-btn[data-remove-subtask] {
+    color: var(--accent);
+    border-color: var(--border);
+    background: var(--surface);
+}
+
+.subtask-input-row button[data-remove-subtask]:hover,
+.subtask-input-row .icon-btn[data-remove-subtask]:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+    background: #fff1f1;
+}

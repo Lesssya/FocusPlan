@@ -551,10 +551,10 @@
           "estimate_unit": "hours",
           "folder": "",
           "attachments": [],
-          "done": false,
-          "earned_xp": 0,
+          "done": true,
+          "earned_xp": 15,
           "created_at": "2026-05-31T17:17:59",
-          "completed_at": null
+          "completed_at": "2026-05-31T17:22:41"
         },
         {
           "id": "3037baa0-4f49-4296-8b4e-55dbd80ec6ab",
@@ -577,13 +577,13 @@
           "estimate_unit": "minutes",
           "folder": "",
           "attachments": [],
-          "done": false,
-          "earned_xp": 0,
+          "done": true,
+          "earned_xp": 30,
           "created_at": "2026-05-31T17:19:44",
-          "completed_at": null
+          "completed_at": "2026-05-31T17:22:48"
         }
       ],
-      "xp": 375,
+      "xp": 420,
       "streak": 2,
       "last_activity": "2026-05-31",
       "achievements": [
