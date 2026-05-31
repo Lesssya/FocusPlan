@@ -1,65 +1,306 @@
 {% extends "base.html" %}
 {% block content %}
 <header class="topbar compact-topbar">
-  <div><h1>Календарь</h1><p>Задачи с датой, без даты и привязка ко времени.</p></div>
+  <div>
+    <h1>Календарь</h1>
+    <p>Задачи с датой, без даты и привязка ко времени.</p>
+  </div>
   <div class="top-actions">
-    <a class="view-tab {{ 'active' if selected_view == 'day' }}" href="{{ url_for('calendar', view='day', month=selected_month) }}">День</a>
-    <a class="view-tab {{ 'active' if selected_view == 'week' }}" href="{{ url_for('calendar', view='week', month=selected_month) }}">Неделя</a>
-    <a class="view-tab {{ 'active' if selected_view == 'month' }}" href="{{ url_for('calendar', view='month', month=selected_month) }}">Месяц</a>
+    <a class="view-tab {{ 'active' if selected_view == 'day' }}" href="{{ url_for('calendar', view='day', date=selected_date) }}">День</a>
+    <a class="view-tab {{ 'active' if selected_view == 'week' }}" href="{{ url_for('calendar', view='week', date=selected_date) }}">Неделя</a>
+    <a class="view-tab {{ 'active' if selected_view == 'month' }}" href="{{ url_for('calendar', view='month', date=selected_date) }}">Месяц</a>
     <button class="btn primary" data-modal-open="taskModal">+ Задача</button>
   </div>
 </header>
 
 <section class="card calendar-card pro-calendar compact-calendar">
   <div class="calendar-toolbar">
-    <a class="btn ghost" href="{{ url_for('calendar', view=selected_view, month=previous_month) }}">←</a>
-    <b>{% if selected_view == 'month' %}{{ month_title }}{% else %}{{ format_date(week_days[0]) }} — {{ format_date(week_days[6]) }}{% endif %}</b>
-    <a class="btn ghost" href="{{ url_for('calendar', view=selected_view, month=next_month) }}">→</a>
-    <a class="btn secondary" href="{{ url_for('calendar', view=selected_view) }}">Сегодня</a>
+    <a class="btn ghost" href="{{ url_for('calendar', view=selected_view, date=previous_date) }}">←</a>
+    <b>{{ period_title }}</b>
+    <a class="btn ghost" href="{{ url_for('calendar', view=selected_view, date=next_date) }}">→</a>
+    <a class="btn secondary" href="{{ url_for('calendar', view=selected_view, date=today_date) }}">Сегодня</a>
   </div>
 
   {% if no_date_tasks %}
-    <div class="calendar-undated"><b>Без даты</b>{% for task in no_date_tasks[:6] %}<span class="month-task {{ task.priority }}">{{ task.title }}</span>{% endfor %}</div>
+    <div class="calendar-undated">
+      <b>Без даты</b>
+      {% for task in no_date_tasks[:6] %}
+        <span
+          class="month-task {{ task.priority }} {{ 'done' if task.done }}"
+          data-calendar-task
+          data-task-title="{{ task.title|e }}"
+          data-task-date="Без даты"
+          data-task-time="Без времени"
+          data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+          data-task-priority="{{ priority_labels[task.priority]|e }}"
+          data-task-importance="{{ importance_labels[task.importance]|e }}"
+          data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+          data-task-xp="{{ task.xp }}"
+          data-task-description="{{ (task.description or '')|e }}"
+        >{{ task.title }}</span>
+      {% endfor %}
+    </div>
   {% endif %}
 
   {% if selected_view == 'week' %}
-  <div class="week-calendar">
-    <div class="time-cell head"></div>
-    {% for day in week_days %}<div class="day-head-cell {{ 'today' if day == today }}"><span>{{ ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][loop.index0] }}</span><b>{{ day[8:10] }}</b></div>{% endfor %}
-    <div class="time-cell all-day-label">Весь день</div>
-    {% for day in week_days %}<div class="hour-cell all-day-cell">{% for task in tasks if task.date == day and not task.time %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>без времени</span></div>{% endfor %}</div>{% endfor %}
-    {% for hour in hours %}
-      <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+    {% set visible_days = week_days %}
+    <details class="calendar-extra-time">
+      <summary>Раннее время 00:00–07:59{% if early_count %} · {{ early_count }} задач{% endif %}</summary>
+      <div class="week-calendar compact-hours">
+        <div class="time-cell head"></div>
+        {% for day in week_days %}
+          <div class="day-head-cell {{ 'today' if day == today }}"><span>{{ ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][loop.index0] }}</span><b>{{ day[8:10] }}</b></div>
+        {% endfor %}
+        {% for hour in early_hours %}
+          <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+          {% for day in week_days %}
+            <div class="hour-cell calendar-slot" data-calendar-date="{{ day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
+              {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}
+                <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+                  data-task-title="{{ task.title|e }}"
+                  data-task-date="{{ format_date(task.date)|e }}"
+                  data-task-time="{{ task.time|e }}"
+                  data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+                  data-task-priority="{{ priority_labels[task.priority]|e }}"
+                  data-task-importance="{{ importance_labels[task.importance]|e }}"
+                  data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+                  data-task-xp="{{ task.xp }}"
+                  data-task-description="{{ (task.description or '')|e }}">
+                  <b>{{ task.title }}</b><span>{{ task.time }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </details>
+
+    <div class="week-calendar">
+      <div class="time-cell head"></div>
       {% for day in week_days %}
-        <div class="hour-cell">
-          {% if day == today and hour == current_hour %}<div class="now-line" style="top: {{ current_minute }}%;"><span>{{ '%02d:%02d'|format(current_hour, current_minute) }}</span></div>{% endif %}
-          {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>{{ task.time }}</span></div>{% endfor %}
+        <div class="day-head-cell {{ 'today' if day == today }}"><span>{{ ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][loop.index0] }}</span><b>{{ day[8:10] }}</b></div>
+      {% endfor %}
+
+      <div class="time-cell all-day-label">Весь день</div>
+      {% for day in week_days %}
+        <div class="hour-cell all-day-cell calendar-slot" data-calendar-date="{{ day }}" data-calendar-time="">
+          {% for task in tasks if task.date == day and not task.time %}
+            <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+              data-task-title="{{ task.title|e }}"
+              data-task-date="{{ format_date(task.date)|e }}"
+              data-task-time="Без времени"
+              data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+              data-task-priority="{{ priority_labels[task.priority]|e }}"
+              data-task-importance="{{ importance_labels[task.importance]|e }}"
+              data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+              data-task-xp="{{ task.xp }}"
+              data-task-description="{{ (task.description or '')|e }}">
+              <b>{{ task.title }}</b><span>без времени</span>
+            </div>
+          {% endfor %}
         </div>
       {% endfor %}
-    {% endfor %}
-  </div>
+
+      {% for hour in hours %}
+        <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+        {% for day in week_days %}
+          <div class="hour-cell calendar-slot" data-calendar-date="{{ day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
+            {% if day == today and hour == current_hour %}
+              <div class="now-line" style="top: {{ current_minute }}%;"><span>{{ '%02d:%02d'|format(current_hour, current_minute) }}</span></div>
+            {% endif %}
+            {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}
+              <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+                data-task-title="{{ task.title|e }}"
+                data-task-date="{{ format_date(task.date)|e }}"
+                data-task-time="{{ task.time|e }}"
+                data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+                data-task-priority="{{ priority_labels[task.priority]|e }}"
+                data-task-importance="{{ importance_labels[task.importance]|e }}"
+                data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+                data-task-xp="{{ task.xp }}"
+                data-task-description="{{ (task.description or '')|e }}">
+                <b>{{ task.title }}</b><span>{{ task.time }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <details class="calendar-extra-time">
+      <summary>Позднее время 20:00–23:59{% if late_count %} · {{ late_count }} задач{% endif %}</summary>
+      <div class="week-calendar compact-hours">
+        <div class="time-cell head"></div>
+        {% for day in week_days %}
+          <div class="day-head-cell {{ 'today' if day == today }}"><span>{{ ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][loop.index0] }}</span><b>{{ day[8:10] }}</b></div>
+        {% endfor %}
+        {% for hour in late_hours %}
+          <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+          {% for day in week_days %}
+            <div class="hour-cell calendar-slot" data-calendar-date="{{ day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
+              {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}
+                <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+                  data-task-title="{{ task.title|e }}"
+                  data-task-date="{{ format_date(task.date)|e }}"
+                  data-task-time="{{ task.time|e }}"
+                  data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+                  data-task-priority="{{ priority_labels[task.priority]|e }}"
+                  data-task-importance="{{ importance_labels[task.importance]|e }}"
+                  data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+                  data-task-xp="{{ task.xp }}"
+                  data-task-description="{{ (task.description or '')|e }}">
+                  <b>{{ task.title }}</b><span>{{ task.time }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </details>
   {% endif %}
 
   {% if selected_view == 'day' %}
-  <div class="day-all-day">{% for task in tasks if task.date == today and not task.time %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>без времени</span></div>{% endfor %}</div>
-  <div class="day-calendar">
-    {% for hour in hours %}
-      <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
-      <div class="hour-cell large">
-        {% if hour == current_hour %}<div class="now-line" style="top: {{ current_minute }}%;"><span>{{ '%02d:%02d'|format(current_hour, current_minute) }}</span></div>{% endif %}
-        {% for task in tasks if task.date == today and task.time and task.time[:2]|int == hour %}<div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}"><b>{{ task.title }}</b><span>{{ task.time }}</span></div>{% endfor %}
+    <div class="day-all-day calendar-slot" data-calendar-date="{{ selected_day }}" data-calendar-time="">
+      {% for task in tasks if task.date == selected_day and not task.time %}
+        <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-title="{{ task.title|e }}"
+          data-task-date="{{ format_date(task.date)|e }}"
+          data-task-time="Без времени"
+          data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+          data-task-priority="{{ priority_labels[task.priority]|e }}"
+          data-task-importance="{{ importance_labels[task.importance]|e }}"
+          data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+          data-task-xp="{{ task.xp }}"
+          data-task-description="{{ (task.description or '')|e }}">
+          <b>{{ task.title }}</b><span>без времени</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <details class="calendar-extra-time">
+      <summary>Раннее время 00:00–07:59{% if early_count %} · {{ early_count }} задач{% endif %}</summary>
+      <div class="day-calendar compact-hours">
+        {% for hour in early_hours %}
+          <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+          <div class="hour-cell large calendar-slot" data-calendar-date="{{ selected_day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
+            {% for task in tasks if task.date == selected_day and task.time and task.time[:2]|int == hour %}
+              <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+                data-task-title="{{ task.title|e }}"
+                data-task-date="{{ format_date(task.date)|e }}"
+                data-task-time="{{ task.time|e }}"
+                data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+                data-task-priority="{{ priority_labels[task.priority]|e }}"
+                data-task-importance="{{ importance_labels[task.importance]|e }}"
+                data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+                data-task-xp="{{ task.xp }}"
+                data-task-description="{{ (task.description or '')|e }}">
+                <b>{{ task.title }}</b><span>{{ task.time }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
       </div>
-    {% endfor %}
-  </div>
+    </details>
+
+    <div class="day-calendar">
+      {% for hour in hours %}
+        <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+        <div class="hour-cell large calendar-slot" data-calendar-date="{{ selected_day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
+          {% if selected_day == today and hour == current_hour %}
+            <div class="now-line" style="top: {{ current_minute }}%;"><span>{{ '%02d:%02d'|format(current_hour, current_minute) }}</span></div>
+          {% endif %}
+          {% for task in tasks if task.date == selected_day and task.time and task.time[:2]|int == hour %}
+            <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+              data-task-title="{{ task.title|e }}"
+              data-task-date="{{ format_date(task.date)|e }}"
+              data-task-time="{{ task.time|e }}"
+              data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+              data-task-priority="{{ priority_labels[task.priority]|e }}"
+              data-task-importance="{{ importance_labels[task.importance]|e }}"
+              data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+              data-task-xp="{{ task.xp }}"
+              data-task-description="{{ (task.description or '')|e }}">
+              <b>{{ task.title }}</b><span>{{ task.time }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <details class="calendar-extra-time">
+      <summary>Позднее время 20:00–23:59{% if late_count %} · {{ late_count }} задач{% endif %}</summary>
+      <div class="day-calendar compact-hours">
+        {% for hour in late_hours %}
+          <div class="time-cell">{{ '%02d:00'|format(hour) }}</div>
+          <div class="hour-cell large calendar-slot" data-calendar-date="{{ selected_day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
+            {% for task in tasks if task.date == selected_day and task.time and task.time[:2]|int == hour %}
+              <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+                data-task-title="{{ task.title|e }}"
+                data-task-date="{{ format_date(task.date)|e }}"
+                data-task-time="{{ task.time|e }}"
+                data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+                data-task-priority="{{ priority_labels[task.priority]|e }}"
+                data-task-importance="{{ importance_labels[task.importance]|e }}"
+                data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+                data-task-xp="{{ task.xp }}"
+                data-task-description="{{ (task.description or '')|e }}">
+                <b>{{ task.title }}</b><span>{{ task.time }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </details>
   {% endif %}
 
   {% if selected_view == 'month' %}
-  <div class="month-calendar">
-    {% for name in ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'] %}<div class="month-weekday">{{ name }}</div>{% endfor %}
-    {% for _ in range(month_leading_blanks) %}<div class="month-day empty"></div>{% endfor %}
-    {% for day in month_days %}<div class="month-day {{ 'today' if day == today }}"><b>{{ day[8:10] }}</b>{% for task in tasks if task.date == day %}<div class="month-task {{ task.priority }} {{ 'done' if task.done }}">{{ task.time or '—' }} {{ task.title }}</div>{% endfor %}</div>{% endfor %}
-  </div>
+    <div class="month-calendar">
+      {% for name in ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'] %}
+        <div class="month-weekday">{{ name }}</div>
+      {% endfor %}
+      {% for _ in range(month_leading_blanks) %}
+        <div class="month-day empty"></div>
+      {% endfor %}
+      {% for day in month_days %}
+        <div class="month-day {{ 'today' if day == today }}">
+          <b>{{ day[8:10] }}</b>
+          {% for task in tasks if task.date == day %}
+            <div class="month-task {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+              data-task-title="{{ task.title|e }}"
+              data-task-date="{{ format_date(task.date)|e }}"
+              data-task-time="{{ task.time or 'Без времени' }}"
+              data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+              data-task-priority="{{ priority_labels[task.priority]|e }}"
+              data-task-importance="{{ importance_labels[task.importance]|e }}"
+              data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+              data-task-xp="{{ task.xp }}"
+              data-task-description="{{ (task.description or '')|e }}">
+              {{ task.time or '—' }} {{ task.title }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
   {% endif %}
 </section>
+
+<div class="modal" id="calendarTaskViewModal">
+  <div class="modal-card">
+    <button class="icon-btn modal-close" data-modal-close type="button">×</button>
+    <h2 id="calendarTaskTitle">Задача</h2>
+    <p class="calendar-task-description" id="calendarTaskDescription"></p>
+    <div class="calendar-task-details">
+      <span><b>Дата:</b> <span id="calendarTaskDate"></span></span>
+      <span><b>Время:</b> <span id="calendarTaskTime"></span></span>
+      <span><b>Папка:</b> <span id="calendarTaskFolder"></span></span>
+      <span><b>Приоритет:</b> <span id="calendarTaskPriority"></span></span>
+      <span><b>Важность:</b> <span id="calendarTaskImportance"></span></span>
+      <span><b>Срочность:</b> <span id="calendarTaskUrgency"></span></span>
+      <span><b>Опыт:</b> +<span id="calendarTaskXp"></span> XP</span>
+    </div>
+    <button class="btn secondary full mt" data-modal-close type="button">Закрыть</button>
+  </div>
+</div>
+
 {% include "partials/task_modal.html" %}
 {% endblock %}

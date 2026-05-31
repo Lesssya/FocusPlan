@@ -257,3 +257,71 @@ try{
   const messages=toastData ? JSON.parse(toastData.textContent||'[]') : [];
   messages.forEach((message,index)=>setTimeout(()=>launchToast(message), 250+index*450));
 }catch(e){}
+
+
+function openTaskModalWithDateTime(dateValue, timeValue){
+  const modal=document.getElementById('taskModal');
+  if(!modal)return;
+
+  const dateInput=modal.querySelector('input[name="date"]');
+  const timeInput=modal.querySelector('input[name="time"]');
+
+  if(dateInput && dateValue) dateInput.value=dateValue;
+  if(timeInput) timeInput.value=timeValue || '';
+
+  updateAutoPriority(modal);
+  modal.classList.add('open');
+
+  const titleInput=modal.querySelector('input[name="title"]');
+  if(titleInput) setTimeout(()=>titleInput.focus(), 80);
+}
+
+function bindCalendarInteractions(){
+  const taskViewModal=document.getElementById('calendarTaskViewModal');
+
+  document.querySelectorAll('[data-calendar-task]').forEach((taskElement)=>{
+    if(taskElement.dataset.calendarTaskBound)return;
+    taskElement.dataset.calendarTaskBound='1';
+
+    taskElement.addEventListener('click',(event)=>{
+      event.preventDefault();
+      event.stopPropagation();
+
+      if(!taskViewModal)return;
+
+      const setText=(id,value)=>{
+        const element=document.getElementById(id);
+        if(element) element.textContent=value || '—';
+      };
+
+      setText('calendarTaskTitle', taskElement.dataset.taskTitle);
+      setText('calendarTaskDate', taskElement.dataset.taskDate);
+      setText('calendarTaskTime', taskElement.dataset.taskTime);
+      setText('calendarTaskFolder', taskElement.dataset.taskFolder);
+      setText('calendarTaskPriority', taskElement.dataset.taskPriority);
+      setText('calendarTaskImportance', taskElement.dataset.taskImportance);
+      setText('calendarTaskUrgency', taskElement.dataset.taskUrgency);
+      setText('calendarTaskXp', taskElement.dataset.taskXp);
+
+      const description=document.getElementById('calendarTaskDescription');
+      if(description){
+        const text=taskElement.dataset.taskDescription || '';
+        description.textContent=text || 'Описание не указано';
+      }
+
+      taskViewModal.classList.add('open');
+    });
+  });
+
+  document.querySelectorAll('[data-calendar-date]').forEach((cell)=>{
+    if(cell.dataset.calendarCellBound)return;
+    cell.dataset.calendarCellBound='1';
+
+    cell.addEventListener('click',(event)=>{
+      if(event.target.closest('[data-calendar-task]'))return;
+      openTaskModalWithDateTime(cell.dataset.calendarDate, cell.dataset.calendarTime || '');
+    });
+  });
+}
+
+bindCalendarInteractions();

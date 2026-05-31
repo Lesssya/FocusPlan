@@ -591,31 +591,107 @@ def delete_task(task_id: str):
 @login_required
 def calendar():
     user = current_user()
-    tasks = sorted([t for t in user.get("tasks", []) if t.get("date")], key=lambda task: (task.get("date"), task.get("time") or "99:99"))
+    tasks = sorted(
+        [t for t in user.get("tasks", []) if t.get("date")],
+        key=lambda task: (task.get("date"), task.get("time") or "99:99")
+    )
     no_date_tasks = [t for t in user.get("tasks", []) if not t.get("date")]
+
     selected_view = request.args.get("view", "week")
     if selected_view not in ["day", "week", "month"]:
         selected_view = "week"
+
     today = date.today()
-    try:
-        selected_month = datetime.strptime(request.args.get("month", today.strftime("%Y-%m")), "%Y-%m").date().replace(day=1)
-    except ValueError:
-        selected_month = today.replace(day=1)
+
+    # Основная дата календаря. Именно она переключается стрелками в режимах
+    # "День" и "Неделя". Для месяца используется первый день выбранного месяца.
+    raw_date = request.args.get("date")
+    raw_month = request.args.get("month")
+    selected_date = today
+    if raw_date:
+        try:
+            selected_date = datetime.strptime(raw_date, "%Y-%m-%d").date()
+        except ValueError:
+            selected_date = today
+    elif raw_month:
+        try:
+            selected_date = datetime.strptime(raw_month, "%Y-%m").date()
+        except ValueError:
+            selected_date = today
+
+    selected_month = selected_date.replace(day=1)
     previous_month = (selected_month - timedelta(days=1)).replace(day=1)
     next_month = (selected_month.replace(day=28) + timedelta(days=4)).replace(day=1)
-    start_of_week = today - timedelta(days=today.weekday())
+
+    if selected_view == "day":
+        previous_date = selected_date - timedelta(days=1)
+        next_date = selected_date + timedelta(days=1)
+    elif selected_view == "week":
+        previous_date = selected_date - timedelta(days=7)
+        next_date = selected_date + timedelta(days=7)
+    else:
+        previous_date = previous_month
+        next_date = next_month
+
+    start_of_week = selected_date - timedelta(days=selected_date.weekday())
     week_days = [(start_of_week + timedelta(days=i)).isoformat() for i in range(7)]
+
     month_days_count = (next_month - selected_month).days
     month_days = [(selected_month + timedelta(days=i)).isoformat() for i in range(month_days_count)]
     month_leading_blanks = selected_month.weekday()
-    hours = list(range(8, 23))
+
+    early_hours = list(range(0, 8))
+    hours = list(range(8, 20))
+    late_hours = list(range(20, 24))
+
+    selected_day = selected_date.isoformat()
+    today_iso = today.isoformat()
     now = datetime.now()
+
+    def count_timed_tasks(day_list: List[str], hour_list: List[int]) -> int:
+        return len([
+            task for task in tasks
+            if task.get("date") in day_list
+            and task.get("time")
+            and int(str(task.get("time", "00:00"))[:2]) in hour_list
+        ])
+
+    early_count = count_timed_tasks([selected_day] if selected_view == "day" else week_days, early_hours)
+    late_count = count_timed_tasks([selected_day] if selected_view == "day" else week_days, late_hours)
+
+    if selected_view == "month":
+        period_title = month_label(selected_month)
+    elif selected_view == "day":
+        period_title = format_date(selected_day)
+    else:
+        period_title = f"{format_date(week_days[0])} — {format_date(week_days[6])}"
+
     return render_template(
-        "calendar.html", tasks=tasks, no_date_tasks=no_date_tasks, week_days=week_days, month_days=month_days,
+        "calendar.html",
+        tasks=tasks,
+        no_date_tasks=no_date_tasks,
+        week_days=week_days,
+        month_days=month_days,
         month_leading_blanks=month_leading_blanks,
-        hours=hours, today=today.isoformat(), selected_view=selected_view, current_hour=now.hour, current_minute=now.minute,
-        month_title=month_label(selected_month), selected_month=selected_month.strftime("%Y-%m"),
-        previous_month=previous_month.strftime("%Y-%m"), next_month=next_month.strftime("%Y-%m")
+        early_hours=early_hours,
+        hours=hours,
+        late_hours=late_hours,
+        early_count=early_count,
+        late_count=late_count,
+        today=today_iso,
+        selected_day=selected_day,
+        selected_view=selected_view,
+        current_hour=now.hour,
+        current_minute=now.minute,
+        month_title=month_label(selected_month),
+        period_title=period_title,
+        selected_month=selected_month.strftime("%Y-%m"),
+        selected_date=selected_day,
+        previous_date=previous_date.isoformat(),
+        next_date=next_date.isoformat(),
+        today_date=today_iso,
+        previous_month=previous_month.strftime("%Y-%m"),
+        next_month=next_month.strftime("%Y-%m")
     )
 
 
