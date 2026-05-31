@@ -7,9 +7,14 @@
     <p>Электронный планер с фокус-сессиями, приоритетами и системой серии дней без сложной регистрации.</p>
     <form method="post" class="login-form">
       <label>Никнейм</label>
-      <input name="nickname" placeholder="Например, Olesya" autocomplete="off">
+      <input name="nickname" placeholder="Например, Olesya" autocomplete="username" required>
+
+      <label>Пароль</label>
+      <input name="password" type="password" placeholder="Введите пароль" autocomplete="current-password" required>
+      <small>Если никнейм используется впервые, профиль будет создан автоматически. Пароль не сохраняется в открытом виде — хранится только его хэш.</small>
+
       {% if error %}<div class="error">{{ error }}</div>{% endif %}
-      <button class="btn primary" type="submit">Начать</button>
+      <button class="btn primary" type="submit">Продолжить</button>
     </form>
   </div>
 </section>

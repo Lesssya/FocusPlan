@@ -8,6 +8,7 @@ from functools import wraps
 from typing import Any, Dict, List
 
 from flask import Flask, redirect, render_template, request, session, url_for, send_from_directory
+from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -94,9 +95,10 @@ def month_label(value: date) -> str:
     return f"{MONTH_NAMES[value.month]} {value.year}"
 
 
-def create_user(nickname: str) -> Dict[str, Any]:
+def create_user(nickname: str, password_hash: str | None = None) -> Dict[str, Any]:
     return {
         "nickname": nickname,
+        "password_hash": password_hash,
         "avatar": nickname[:1].upper() if nickname else "F",
         "settings": DEFAULT_SETTINGS.copy(),
         "folders": DEFAULT_FOLDERS.copy(),
@@ -112,6 +114,7 @@ def create_user(nickname: str) -> Dict[str, Any]:
 
 
 def normalize_user(user: Dict[str, Any]) -> Dict[str, Any]:
+    user.setdefault("password_hash", None)
     user.setdefault("settings", DEFAULT_SETTINGS.copy())
     user["settings"]["theme"] = "light"
     user.setdefault("folders", DEFAULT_FOLDERS.copy())
@@ -428,14 +431,44 @@ def inject_user_data():
 def login():
     if request.method == "POST":
         nickname = request.form.get("nickname", "").strip()
+        password = request.form.get("password", "")
+
         if not nickname:
             return render_template("login.html", error="Введите никнейм для входа")
+        if not password:
+            return render_template("login.html", error="Введите пароль")
+
         store = load_store()
-        if nickname not in store["users"]:
-            store["users"][nickname] = create_user(nickname)
+        user = store["users"].get(nickname)
+
+        if not user:
+            store["users"][nickname] = create_user(
+                nickname,
+                password_hash=generate_password_hash(password)
+            )
             save_store(store)
+            session["nickname"] = nickname
+            return redirect(url_for("dashboard"))
+
+        user = normalize_user(user)
+        saved_hash = user.get("password_hash")
+
+        # Для старых профилей без пароля: первый введённый пароль становится паролем профиля.
+        if not saved_hash:
+            user["password_hash"] = generate_password_hash(password)
+            store["users"][nickname] = user
+            save_store(store)
+            session["nickname"] = nickname
+            return redirect(url_for("dashboard"))
+
+        if not check_password_hash(saved_hash, password):
+            return render_template("login.html", error="Неверный пароль")
+
+        store["users"][nickname] = user
+        save_store(store)
         session["nickname"] = nickname
         return redirect(url_for("dashboard"))
+
     if session.get("nickname"):
         return redirect(url_for("dashboard"))
     return render_template("login.html")
