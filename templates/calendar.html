@@ -262,7 +262,11 @@
         <div class="month-day empty"></div>
       {% endfor %}
       {% for day in month_days %}
-        <div class="month-day {{ 'today' if day == today }}">
+        <div
+          class="month-day {{ 'today' if day == today }} calendar-slot"
+          data-calendar-date="{{ day }}"
+          data-calendar-time=""
+        >
           <b>{{ day[8:10] }}</b>
           {% for task in tasks if task.date == day %}
             <div class="month-task {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
