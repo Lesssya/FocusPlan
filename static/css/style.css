@@ -124,3 +124,71 @@
     border-color: var(--danger);
     background: #fff1f1;
 }
+
+/* История выполненных задач на странице "Задачи" */
+.completed-history {
+    margin-top: 16px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.completed-history summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--text);
+    font-weight: 900;
+}
+
+.completed-history summary::-webkit-details-marker {
+    display: none;
+}
+
+.completed-history .history-arrow {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform .2s ease;
+}
+
+.completed-history[open] .history-arrow {
+    transform: rotate(180deg);
+}
+
+.completed-task-list {
+    padding: 0 16px 16px;
+}
+
+.completed-task-list .task-card.done {
+    opacity: .9;
+}
+
+/* Выравнивание карточек в истории выполненных задач по левому краю */
+.completed-task-list .task-row summary {
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    align-items: start;
+    text-align: left;
+}
+
+.completed-task-list .task-content {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+.completed-task-list .task-title-line,
+.completed-task-list .task-meta {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.completed-task-list .task-title-line b,
+.completed-task-list .task-description {
+    text-align: left;
+}

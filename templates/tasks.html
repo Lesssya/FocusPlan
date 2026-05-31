@@ -19,7 +19,32 @@
     <a class="{{ 'active' if active_filter == 'dated' }}" href="{{ url_for('tasks_page', filter='dated', folder=active_folder) }}">С датой</a>
     <a class="{{ 'active' if active_filter == 'nodate' }}" href="{{ url_for('tasks_page', filter='nodate', folder=active_folder) }}">Без даты</a>
   </div>
-  {% if tasks %}<div class="task-list">{% for task in tasks %}{% set compact_task = False %}{% include "partials/task_card.html" %}{% endfor %}</div>{% else %}<div class="empty">Нет задач по выбранному фильтру.</div>{% endif %}
+  {% if active_tasks %}
+    <div class="task-list">
+      {% for task in active_tasks %}
+        {% set compact_task = False %}
+        {% include "partials/task_card.html" %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">Нет активных задач по выбранному фильтру.</div>
+  {% endif %}
+
+  {% if completed_tasks %}
+    <details class="completed-history">
+      <summary>
+        <span>История выполненных задач · {{ completed_tasks|length }}</span>
+        <span class="history-arrow">⌄</span>
+      </summary>
+
+      <div class="task-list completed-task-list">
+        {% for task in completed_tasks %}
+          {% set compact_task = False %}
+          {% include "partials/task_card.html" %}
+        {% endfor %}
+      </div>
+    </details>
+  {% endif %}
 </section>
 {% include "partials/task_modal.html" %}
 {% endblock %}

@@ -444,14 +444,36 @@ def tasks_page():
     user = current_user()
     active_filter = request.args.get("filter", "all")
     active_folder = request.args.get("folder", "all")
-    tasks = sorted(user.get("tasks", []), key=lambda task: (task.get("done", False), task.get("date") or "9999-99-99", task.get("time") or "99:99"))
+
+    tasks = list(user.get("tasks", []))
+
     if active_filter == "dated":
         tasks = [t for t in tasks if t.get("date")]
     elif active_filter == "nodate":
         tasks = [t for t in tasks if not t.get("date")]
+
     if active_folder != "all":
         tasks = [t for t in tasks if t.get("folder") == active_folder]
-    return render_template("tasks.html", tasks=tasks, active_filter=active_filter, active_folder=active_folder, folders=user.get("folders", []))
+
+    active_tasks = sorted(
+        [t for t in tasks if not t.get("done")],
+        key=lambda task: (task.get("date") or "9999-99-99", task.get("time") or "99:99")
+    )
+    completed_tasks = sorted(
+        [t for t in tasks if t.get("done")],
+        key=lambda task: (task.get("completed_at") or task.get("date") or "", task.get("time") or ""),
+        reverse=True
+    )
+
+    return render_template(
+        "tasks.html",
+        tasks=tasks,
+        active_tasks=active_tasks,
+        completed_tasks=completed_tasks,
+        active_filter=active_filter,
+        active_folder=active_folder,
+        folders=user.get("folders", [])
+    )
 
 
 @app.route("/folders/add", methods=["POST"])

@@ -531,10 +531,9 @@
           "estimate_unit": "hours",
           "folder": "",
           "attachments": [],
-          "done": true,
-          "earned_xp": 15,
-          "created_at": "2026-05-31T17:15:29",
-          "completed_at": "2026-05-31T17:30:49"
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-05-31T17:15:29"
         },
         {
           "id": "b5a88d10-14a3-4fba-abcc-8b3d4faf0b6e",
@@ -583,7 +582,7 @@
           "completed_at": "2026-05-31T17:22:48"
         }
       ],
-      "xp": 435,
+      "xp": 420,
       "streak": 2,
       "last_activity": "2026-05-31",
       "achievements": [
