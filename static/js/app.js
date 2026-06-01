@@ -480,3 +480,58 @@ function bindCalendarInteractions(){
 }
 
 bindCalendarInteractions();
+
+function bindMatrixInteractions(){
+  const taskViewModal = document.getElementById('calendarTaskViewModal');
+
+  document.querySelectorAll('[data-matrix-task]').forEach((taskElement)=>{
+    if(taskElement.dataset.matrixTaskBound) return;
+    taskElement.dataset.matrixTaskBound = '1';
+
+    taskElement.addEventListener('click', (event)=>{
+      event.preventDefault();
+      event.stopPropagation();
+
+      if(!taskViewModal) return;
+
+      const setText = (id, value)=>{
+        const element = document.getElementById(id);
+        if(element) element.textContent = value || '—';
+      };
+
+      setText('calendarTaskTitle', taskElement.dataset.taskTitle);
+      setText('calendarTaskDate', taskElement.dataset.taskDate);
+      setText('calendarTaskTime', taskElement.dataset.taskTime);
+      setText('calendarTaskFolder', taskElement.dataset.taskFolder);
+      setText('calendarTaskPriority', taskElement.dataset.taskPriority);
+      setText('calendarTaskImportance', taskElement.dataset.taskImportance);
+      setText('calendarTaskUrgency', taskElement.dataset.taskUrgency);
+      setText('calendarTaskXp', taskElement.dataset.taskXp);
+
+      const description = document.getElementById('calendarTaskDescription');
+      if(description){
+        const text = taskElement.dataset.taskDescription || '';
+        description.textContent = text || 'Описание не указано';
+      }
+
+      const editButton = document.getElementById('calendarTaskEditButton');
+
+      if(editButton){
+        editButton.onclick = () => {
+          taskViewModal.classList.remove('open');
+
+          const editModalId = taskElement.dataset.taskEditModal;
+          const editModal = document.getElementById(editModalId);
+
+          if(editModal){
+            editModal.classList.add('open');
+          }
+        };
+      }
+
+      taskViewModal.classList.add('open');
+    });
+  });
+}
+
+bindMatrixInteractions();

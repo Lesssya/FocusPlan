@@ -874,6 +874,32 @@
           "earned_xp": 0,
           "created_at": "2026-06-01T14:07:44",
           "completed_at": null
+        },
+        {
+          "id": "78476d01-51ce-4353-989f-5189d47bdf24",
+          "title": "11",
+          "description": "",
+          "subtasks": [
+            {
+              "id": "be266bb9-ce0c-424d-b7eb-210dd4c11961",
+              "title": "1",
+              "done": false
+            }
+          ],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 20,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-06-01T15:04:46",
+          "completed_at": null
         }
       ],
       "xp": 269,
@@ -898,7 +924,7 @@
         }
       ],
       "focus_sessions": 0,
-      "selected_badge": "newbie",
+      "selected_badge": "regular_planner",
       "created_at": "2026-05-31T13:56:42",
       "password_hash": "scrypt:32768:8:1$1IrWcKhMaerojYU2$c862657f7fdb36088558e7ae8335703e7a2d9e7174c12b333c1ccbd9909e277b7195ee34fcb07c22483b16ddc30b57642b35f3c1b14a4124420f46eb21a9b5aa"
     },

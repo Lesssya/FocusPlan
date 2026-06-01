@@ -1,27 +1,105 @@
 {% extends "base.html" %}
 {% block content %}
 <header class="topbar compact-topbar"><div><h1>Матрица приоритетов</h1><p>Упрощённая матрица Эйзенхауэра: важно/срочно.</p></div><button class="btn primary" data-modal-open="taskModal">+ Задача</button></header>
+
+{% set matrix_tasks = matrix.urgent_important + matrix.not_urgent_important + matrix.urgent_not_important + matrix.not_urgent_not_important %}
+
 <section class="matrix-grid">
   <div class="card quadrant red">
     <div class="quad-strip"></div>
     <div class="quadrant-head"><div><h2>Сделать сейчас</h2><p>Срочно и важно</p></div><button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="high" data-preset-urgency="urgent">+ Задача</button></div>
-    {% for task in matrix.urgent_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}
+    {% for task in matrix.urgent_important %}
+      <div class="mini-task" data-calendar-task data-task-edit-modal="editModal-{{ task.id }}"
+        data-task-title="{{ task.title|e }}"
+        data-task-date="{{ (format_date(task.date) if task.date else 'Без даты')|e }}"
+        data-task-time="{{ (task.time if task.time else 'Без времени')|e }}"
+        data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+        data-task-priority="{{ priority_labels[task.priority]|e }}"
+        data-task-importance="{{ importance_labels[task.importance]|e }}"
+        data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+        data-task-xp="{{ task.xp }}"
+        data-task-description="{{ (task.description or '')|e }}">
+        <b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span>
+      </div>
+    {% endfor %}
   </div>
   <div class="card quadrant yellow">
     <div class="quad-strip"></div>
     <div class="quadrant-head"><div><h2>Запланировать</h2><p>Важно, но не срочно</p></div><button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="high" data-preset-urgency="not_urgent">+ Задача</button></div>
-    {% for task in matrix.not_urgent_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}
+    {% for task in matrix.not_urgent_important %}
+      <div class="mini-task" data-calendar-task data-task-edit-modal="editModal-{{ task.id }}"
+        data-task-title="{{ task.title|e }}"
+        data-task-date="{{ (format_date(task.date) if task.date else 'Без даты')|e }}"
+        data-task-time="{{ (task.time if task.time else 'Без времени')|e }}"
+        data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+        data-task-priority="{{ priority_labels[task.priority]|e }}"
+        data-task-importance="{{ importance_labels[task.importance]|e }}"
+        data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+        data-task-xp="{{ task.xp }}"
+        data-task-description="{{ (task.description or '')|e }}">
+        <b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span>
+      </div>
+    {% endfor %}
   </div>
   <div class="card quadrant blue">
     <div class="quad-strip"></div>
     <div class="quadrant-head"><div><h2>Упростить</h2><p>Срочно, но не важно</p></div><button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="low" data-preset-urgency="urgent">+ Задача</button></div>
-    {% for task in matrix.urgent_not_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}
+    {% for task in matrix.urgent_not_important %}
+      <div class="mini-task" data-calendar-task data-task-edit-modal="editModal-{{ task.id }}"
+        data-task-title="{{ task.title|e }}"
+        data-task-date="{{ (format_date(task.date) if task.date else 'Без даты')|e }}"
+        data-task-time="{{ (task.time if task.time else 'Без времени')|e }}"
+        data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+        data-task-priority="{{ priority_labels[task.priority]|e }}"
+        data-task-importance="{{ importance_labels[task.importance]|e }}"
+        data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+        data-task-xp="{{ task.xp }}"
+        data-task-description="{{ (task.description or '')|e }}">
+        <b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span>
+      </div>
+    {% endfor %}
   </div>
   <div class="card quadrant gray">
     <div class="quad-strip"></div>
     <div class="quadrant-head"><div><h2>Отложить</h2><p>Не срочно и не важно</p></div><button class="btn secondary quad-add" data-modal-open="taskModal" data-preset-importance="low" data-preset-urgency="not_urgent">+ Задача</button></div>
-    {% for task in matrix.not_urgent_not_important %}<div class="mini-task"><b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span></div>{% endfor %}
+    {% for task in matrix.not_urgent_not_important %}
+      <div class="mini-task" data-calendar-task data-task-edit-modal="editModal-{{ task.id }}"
+        data-task-title="{{ task.title|e }}"
+        data-task-date="{{ (format_date(task.date) if task.date else 'Без даты')|e }}"
+        data-task-time="{{ (task.time if task.time else 'Без времени')|e }}"
+        data-task-folder="{{ (task.folder or 'Без папки')|e }}"
+        data-task-priority="{{ priority_labels[task.priority]|e }}"
+        data-task-importance="{{ importance_labels[task.importance]|e }}"
+        data-task-urgency="{{ urgency_labels[task.urgency]|e }}"
+        data-task-xp="{{ task.xp }}"
+        data-task-description="{{ (task.description or '')|e }}">
+        <b>{{ task.title }}</b><span>+{{ task.xp }} опыта</span>
+      </div>
+    {% endfor %}
   </div>
 </section>
+
+<div class="modal" id="calendarTaskViewModal">
+  <div class="modal-card">
+    <button class="icon-btn modal-close" data-modal-close type="button">×</button>
+    <h2 id="calendarTaskTitle">Задача</h2>
+    <p class="calendar-task-description" id="calendarTaskDescription"></p>
+    <div class="calendar-task-details">
+      <span><b>Дата:</b> <span id="calendarTaskDate"></span></span>
+      <span><b>Время:</b> <span id="calendarTaskTime"></span></span>
+      <span><b>Папка:</b> <span id="calendarTaskFolder"></span></span>
+      <span><b>Приоритет:</b> <span id="calendarTaskPriority"></span></span>
+      <span><b>Важность:</b> <span id="calendarTaskImportance"></span></span>
+      <span><b>Срочность:</b> <span id="calendarTaskUrgency"></span></span>
+      <span><b>Опыт:</b> +<span id="calendarTaskXp"></span> XP</span>
+    </div>
+    <button class="btn secondary full mt" id="calendarTaskEditButton" type="button">Редактировать</button>
+  </div>
+</div>
+
+{% for task in matrix_tasks %}
+  {% include "partials/task_edit_modal.html" %}
+{% endfor %}
+
 {% include "partials/task_modal.html" %}
 {% endblock %}
