@@ -535,3 +535,26 @@ function bindMatrixInteractions(){
 }
 
 bindMatrixInteractions();
+
+function bindKeepTaskOpenAfterSubtaskToggle(){
+  document.querySelectorAll('[data-keep-task-open]').forEach((form)=>{
+    if(form.dataset.keepTaskOpenBound) return;
+    form.dataset.keepTaskOpenBound = '1';
+
+    form.addEventListener('submit', ()=>{
+      localStorage.setItem('focusplan-open-task-id', form.dataset.keepTaskOpen);
+    });
+  });
+
+  const taskId = localStorage.getItem('focusplan-open-task-id');
+  if(taskId){
+    const details = document.querySelector(`[data-task-details="${taskId}"]`);
+    if(details){
+      details.open = true;
+      details.scrollIntoView({block: 'center'});
+    }
+    localStorage.removeItem('focusplan-open-task-id');
+  }
+}
+
+bindKeepTaskOpenAfterSubtaskToggle();

@@ -1,4 +1,7 @@
-<details class="task-row task-card {{ 'done' if task.done }} {{ 'compact-task' if compact_task else '' }}">
+<details 
+  class="task-row task-card {{ 'done' if task.done }} {{ 'compact-task' if compact_task else '' }}"
+  data-task-details="{{ task.id }}"
+>
   <summary>
     <form method="post" action="{{ url_for('toggle_task', task_id=task.id) }}" class="inline-form" onclick="event.stopPropagation()">
       <button class="check {{ 'checked' if task.done }}" title="Отметить выполнение">{{ '✓' if task.done else '' }}</button>
@@ -22,7 +25,12 @@
     {% if task.subtasks %}
       <div class="subtasks-list">
         {% for subtask in task.subtasks %}
-          <form method="post" action="{{ url_for('toggle_subtask', task_id=task.id, subtask_id=subtask.id) }}" class="subtask-item {{ 'done' if subtask.done }}">
+          <form 
+            method="post" 
+            action="{{ url_for('toggle_subtask', task_id=task.id, subtask_id=subtask.id) }}" 
+            class="subtask-item {{ 'done' if subtask.done }}"
+            data-keep-task-open="{{ task.id }}"
+          >
             <button class="subcheck" type="submit">{{ '✓' if subtask.done else '' }}</button><span>{{ subtask.title }}</span>
           </form>
         {% endfor %}

@@ -733,9 +733,112 @@
           "earned_xp": 30,
           "created_at": "2026-06-01T15:15:33",
           "completed_at": "2026-06-01T15:17:13"
+        },
+        {
+          "id": "11967429-214c-4031-8288-2c836acba6b2",
+          "title": "ноапч",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-06-01T15:21:16",
+          "completed_at": "2026-06-01T15:31:04"
+        },
+        {
+          "id": "bf66ffc1-4748-470d-8533-189437765337",
+          "title": "задача с датой",
+          "description": "",
+          "subtasks": [
+            {
+              "id": "c3a5b362-95d4-4a57-abbe-2a24c59d08a1",
+              "title": "1",
+              "done": true
+            },
+            {
+              "id": "786353f5-72f8-4b4c-9a0c-74f288153c76",
+              "title": "купить помидоры",
+              "done": true
+            }
+          ],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 35,
+          "date": "2026-06-01",
+          "time": "18:26",
+          "estimate_value": "8",
+          "estimate_unit": "minutes",
+          "folder": "Работа",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 35,
+          "created_at": "2026-06-01T15:22:48",
+          "completed_at": "2026-06-01T15:31:02"
+        },
+        {
+          "id": "38c93f51-bb27-4a0b-beae-e1201fefeb85",
+          "title": "задача без даты",
+          "description": "",
+          "subtasks": [
+            {
+              "id": "59347913-92b3-4869-a0eb-912f31b37b4c",
+              "title": "купить помидоры",
+              "done": false
+            }
+          ],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 35,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 35,
+          "created_at": "2026-06-01T15:31:17",
+          "completed_at": "2026-06-01T15:31:18"
+        },
+        {
+          "id": "50ec575a-5de2-4f89-b540-9ef7a19b0c66",
+          "title": "задача без даты",
+          "description": "",
+          "subtasks": [
+            {
+              "id": "f47247e6-ef96-4f57-ad1c-413acf7a57b2",
+              "title": "купить помидоры",
+              "done": true
+            }
+          ],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 35,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 35,
+          "created_at": "2026-06-01T15:31:30",
+          "completed_at": "2026-06-01T15:31:34"
         }
       ],
-      "xp": 589,
+      "xp": 709,
       "streak": 3,
       "last_activity": "2026-06-01",
       "achievements": [
@@ -769,7 +872,7 @@
         }
       ],
       "focus_sessions": 2,
-      "selected_badge": "regular_planner",
+      "selected_badge": "focus_master",
       "created_at": "2026-05-30T18:09:40",
       "password_hash": "scrypt:32768:8:1$QEmm3BFplfZRMIOb$580af57dfaadbdfeb93db848078faaaf78e2b002ba1b0ec34fb02c4a38618de029bc3c9c2070d6a3e4f42028ec898c45f0a7fdb72e5dd119109ba48f1015c40c"
     },
