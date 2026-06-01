@@ -416,6 +416,22 @@ function openTaskModalWithDateTime(dateValue, timeValue){
 
 function bindCalendarInteractions(){
   const taskViewModal=document.getElementById('calendarTaskViewModal');
+  const calendarTaskEditButton=document.getElementById('calendarTaskEditButton');
+
+  if(calendarTaskEditButton && !calendarTaskEditButton.dataset.editButtonBound){
+    calendarTaskEditButton.dataset.editButtonBound='1';
+    calendarTaskEditButton.addEventListener('click',()=>{
+      if(!taskViewModal)return;
+      const editModalId=taskViewModal.dataset.editModal;
+      taskViewModal.classList.remove('open');
+      if(!editModalId)return;
+      const editModal=document.getElementById(editModalId);
+      if(editModal){
+        updateAutoPriority(editModal);
+        editModal.classList.add('open');
+      }
+    });
+  }
 
   document.querySelectorAll('[data-calendar-task]').forEach((taskElement)=>{
     if(taskElement.dataset.calendarTaskBound)return;
@@ -447,6 +463,7 @@ function bindCalendarInteractions(){
         description.textContent=text || 'Описание не указано';
       }
 
+      taskViewModal.dataset.editModal=taskElement.dataset.taskEditModal || '';
       taskViewModal.classList.add('open');
     });
   });

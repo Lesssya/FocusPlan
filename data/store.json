@@ -622,7 +622,7 @@
       "avatar": "Р",
       "settings": {
         "theme": "light",
-        "accent": "green",
+        "accent": "purple",
         "notifications": true
       },
       "folders": [
@@ -757,11 +757,128 @@
           "earned_xp": 22,
           "created_at": "2026-05-31T14:04:12",
           "completed_at": "2026-05-31T14:04:30"
+        },
+        {
+          "id": "a418d5a5-f7b4-4c3e-9ebb-8656da5d69f7",
+          "title": "Подготовить отчет по проекту",
+          "description": "Разработать план отчета и реализовать",
+          "subtasks": [
+            {
+              "id": "7ebcea81-5ea1-4d27-86e0-29d5479e65dc",
+              "title": "Собрать материалы",
+              "done": false
+            },
+            {
+              "id": "d7e858c9-e6d2-40d9-af50-13261a48c4ed",
+              "title": "Подготовить документ",
+              "done": false
+            }
+          ],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 35,
+          "date": "2026-06-01",
+          "time": "",
+          "estimate_value": "5",
+          "estimate_unit": "hours",
+          "folder": "Работа",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 35,
+          "created_at": "2026-06-01T14:05:39",
+          "completed_at": "2026-06-01T14:09:31"
+        },
+        {
+          "id": "7761955c-8c2a-4f83-a608-df2d678b8251",
+          "title": "Квартальный отчет",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "medium",
+          "urgency": "urgent",
+          "xp": 25,
+          "date": "2026-06-01",
+          "time": "15:00",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 25,
+          "created_at": "2026-06-01T14:06:28",
+          "completed_at": "2026-06-01T14:09:29"
+        },
+        {
+          "id": "c00dbc6e-f944-4df5-8b59-04c40004a17b",
+          "title": "Сходить в магазин",
+          "description": "",
+          "subtasks": [
+            {
+              "id": "e09c04a8-2418-4d7c-8a63-db95569f712a",
+              "title": "купить помидоры",
+              "done": false
+            }
+          ],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 20,
+          "date": "2026-06-01",
+          "time": "21:00",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 20,
+          "created_at": "2026-06-01T14:06:40",
+          "completed_at": "2026-06-01T14:09:30"
+        },
+        {
+          "id": "e45be147-12b7-4a33-97b5-d72b481aec07",
+          "title": "отправиться на пробежку",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "2026-06-01",
+          "time": "06:00",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 15,
+          "created_at": "2026-06-01T14:06:57",
+          "completed_at": "2026-06-01T14:09:27"
+        },
+        {
+          "id": "fd73c767-a29a-4062-8294-2d6c6607fa00",
+          "title": "Сделать проект MVP",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "high",
+          "urgency": "not_urgent",
+          "xp": 20,
+          "date": "2026-08-06",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-06-01T14:07:44",
+          "completed_at": null
         }
       ],
-      "xp": 174,
-      "streak": 1,
-      "last_activity": "2026-05-31",
+      "xp": 269,
+      "streak": 2,
+      "last_activity": "2026-06-01",
       "achievements": [
         {
           "code": "first_task",
@@ -953,6 +1070,150 @@
       "focus_sessions": 0,
       "selected_badge": null,
       "created_at": "2026-05-31T18:54:40"
+    },
+    "Lena123": {
+      "nickname": "Lena123",
+      "password_hash": "scrypt:32768:8:1$vF6vmY48rUoRhHn6$26180ca03555d9ace8e34466da891839d1d7013ab1f33f7b7f60e971d2b4b0d0edbe8f22f5e3599eee36451a93f2b289f6168c5a38051e5887b96ed4971babeb",
+      "avatar": "L",
+      "settings": {
+        "theme": "light",
+        "accent": "green",
+        "notifications": true
+      },
+      "folders": [
+        "Учёба",
+        "Работа",
+        "Личное",
+        "дизайн"
+      ],
+      "tasks": [
+        {
+          "id": "162facfb-7d70-4384-86e6-6a1bf4136d1f",
+          "title": "новая задачка",
+          "description": "",
+          "subtasks": [
+            {
+              "id": "8fde9314-691a-44d7-9482-d4d4f670ea93",
+              "title": "купить помидоры",
+              "done": false
+            }
+          ],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 20,
+          "date": "2026-06-01",
+          "time": "",
+          "estimate_value": "5",
+          "estimate_unit": "minutes",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 20,
+          "created_at": "2026-06-01T01:21:05",
+          "completed_at": "2026-06-01T01:21:15"
+        },
+        {
+          "id": "b7aa04f7-4d2a-40aa-add8-a7f0ed6048b5",
+          "title": "Сделать проект MVP",
+          "description": "",
+          "subtasks": [],
+          "priority": "low",
+          "importance": "medium",
+          "urgency": "not_urgent",
+          "xp": 15,
+          "date": "2026-06-17",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "Учёба",
+          "attachments": [],
+          "done": false,
+          "earned_xp": 0,
+          "created_at": "2026-06-01T01:21:54",
+          "completed_at": null
+        },
+        {
+          "id": "92bbc46e-080b-4cc8-9daa-c61debe56b02",
+          "title": "срочно",
+          "description": "",
+          "subtasks": [],
+          "priority": "high",
+          "importance": "high",
+          "urgency": "urgent",
+          "xp": 30,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 30,
+          "created_at": "2026-06-01T01:22:22",
+          "completed_at": "2026-06-01T01:23:33"
+        },
+        {
+          "id": "5878154d-624a-4d89-a7ec-d50462f11a84",
+          "title": "не оч",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "high",
+          "urgency": "not_urgent",
+          "xp": 20,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 20,
+          "created_at": "2026-06-01T01:22:27",
+          "completed_at": "2026-06-01T01:23:37"
+        },
+        {
+          "id": "0dc912ff-f07f-442e-9b16-5cfe2bf6a841",
+          "title": "потом",
+          "description": "",
+          "subtasks": [],
+          "priority": "medium",
+          "importance": "low",
+          "urgency": "urgent",
+          "xp": 22,
+          "date": "",
+          "time": "",
+          "estimate_value": "",
+          "estimate_unit": "hours",
+          "folder": "",
+          "attachments": [],
+          "done": true,
+          "earned_xp": 22,
+          "created_at": "2026-06-01T01:22:31",
+          "completed_at": "2026-06-01T01:23:38"
+        }
+      ],
+      "xp": 142,
+      "streak": 1,
+      "last_activity": "2026-06-01",
+      "achievements": [
+        {
+          "code": "first_task",
+          "received_at": "2026-06-01T01:21:09"
+        },
+        {
+          "code": "urgent_important",
+          "received_at": "2026-06-01T01:23:33"
+        },
+        {
+          "code": "new_level",
+          "received_at": "2026-06-01T01:23:37"
+        }
+      ],
+      "focus_sessions": 0,
+      "selected_badge": "newbie",
+      "created_at": "2026-06-01T01:20:23"
     }
   }
 }

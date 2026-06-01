@@ -28,6 +28,7 @@
         <span
           class="month-task {{ task.priority }} {{ 'done' if task.done }}"
           data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
           data-task-title="{{ task.title|e }}"
           data-task-date="Без даты"
           data-task-time="Без времени"
@@ -57,6 +58,7 @@
             <div class="hour-cell calendar-slot" data-calendar-date="{{ day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
               {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}
                 <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
                   data-task-title="{{ task.title|e }}"
                   data-task-date="{{ format_date(task.date)|e }}"
                   data-task-time="{{ task.time|e }}"
@@ -86,6 +88,7 @@
         <div class="hour-cell all-day-cell calendar-slot" data-calendar-date="{{ day }}" data-calendar-time="">
           {% for task in tasks if task.date == day and not task.time %}
             <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
               data-task-title="{{ task.title|e }}"
               data-task-date="{{ format_date(task.date)|e }}"
               data-task-time="Без времени"
@@ -110,6 +113,7 @@
             {% endif %}
             {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}
               <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
                 data-task-title="{{ task.title|e }}"
                 data-task-date="{{ format_date(task.date)|e }}"
                 data-task-time="{{ task.time|e }}"
@@ -140,6 +144,7 @@
             <div class="hour-cell calendar-slot" data-calendar-date="{{ day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
               {% for task in tasks if task.date == day and task.time and task.time[:2]|int == hour %}
                 <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
                   data-task-title="{{ task.title|e }}"
                   data-task-date="{{ format_date(task.date)|e }}"
                   data-task-time="{{ task.time|e }}"
@@ -163,6 +168,7 @@
     <div class="day-all-day calendar-slot" data-calendar-date="{{ selected_day }}" data-calendar-time="">
       {% for task in tasks if task.date == selected_day and not task.time %}
         <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
           data-task-title="{{ task.title|e }}"
           data-task-date="{{ format_date(task.date)|e }}"
           data-task-time="Без времени"
@@ -185,6 +191,7 @@
           <div class="hour-cell large calendar-slot" data-calendar-date="{{ selected_day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
             {% for task in tasks if task.date == selected_day and task.time and task.time[:2]|int == hour %}
               <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
                 data-task-title="{{ task.title|e }}"
                 data-task-date="{{ format_date(task.date)|e }}"
                 data-task-time="{{ task.time|e }}"
@@ -211,6 +218,7 @@
           {% endif %}
           {% for task in tasks if task.date == selected_day and task.time and task.time[:2]|int == hour %}
             <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
               data-task-title="{{ task.title|e }}"
               data-task-date="{{ format_date(task.date)|e }}"
               data-task-time="{{ task.time|e }}"
@@ -235,6 +243,7 @@
           <div class="hour-cell large calendar-slot" data-calendar-date="{{ selected_day }}" data-calendar-time="{{ '%02d:00'|format(hour) }}">
             {% for task in tasks if task.date == selected_day and task.time and task.time[:2]|int == hour %}
               <div class="calendar-task block {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
                 data-task-title="{{ task.title|e }}"
                 data-task-date="{{ format_date(task.date)|e }}"
                 data-task-time="{{ task.time|e }}"
@@ -270,6 +279,7 @@
           <b>{{ day[8:10] }}</b>
           {% for task in tasks if task.date == day %}
             <div class="month-task {{ task.priority }} {{ 'done' if task.done }}" data-calendar-task
+          data-task-edit-modal="editModal-{{ task.id }}"
               data-task-title="{{ task.title|e }}"
               data-task-date="{{ format_date(task.date)|e }}"
               data-task-time="{{ task.time or 'Без времени' }}"
@@ -302,9 +312,13 @@
       <span><b>Срочность:</b> <span id="calendarTaskUrgency"></span></span>
       <span><b>Опыт:</b> +<span id="calendarTaskXp"></span> XP</span>
     </div>
-    <button class="btn secondary full mt" data-modal-close type="button">Закрыть</button>
+    <button class="btn secondary full mt" id="calendarTaskEditButton" type="button">Редактировать</button>
   </div>
 </div>
+
+{% for task in tasks + no_date_tasks %}
+  {% include "partials/task_edit_modal.html" %}
+{% endfor %}
 
 {% include "partials/task_modal.html" %}
 {% endblock %}
