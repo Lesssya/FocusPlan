@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import uuid
 from datetime import date, datetime, timedelta
@@ -11,67 +10,35 @@ from flask import Flask, redirect, render_template, request, session, url_for, s
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
+from focusplan_db import (
+    ACHIEVEMENTS,
+    BADGES,
+    DEFAULT_SETTINGS,
+    ESTIMATE_UNIT_LABELS,
+    IMPORTANCE_LABELS,
+    PRIORITY_LABELS,
+    URGENCY_LABELS,
+    UPLOAD_DIR,
+    available_badge_codes,
+    calculate_priority,
+    calculate_task_xp,
+    create_user,
+    ensure_database,
+    level_from_xp,
+    level_state_from_xp,
+    load_user_from_db,
+    normalize_user,
+    sync_user_to_db,
+    user_exists,
+)
+
 app = Flask(__name__)
 app.secret_key = "focus-plan-demo-secret-key"
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
-UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
-DATA_FILE = os.path.join(DATA_DIR, "store.json")
-
-DEFAULT_SETTINGS = {"theme": "light", "accent": "purple", "notifications": True}
-DEFAULT_FOLDERS = ["Учёба", "Работа", "Личное"]
-
-PRIORITY_LABELS = {"low": "Низкий", "medium": "Средний", "high": "Высокий"}
-IMPORTANCE_LABELS = {"low": "Низкая", "medium": "Средняя", "high": "Высокая"}
-URGENCY_LABELS = {"not_urgent": "Не срочно", "urgent": "Срочно"}
-ESTIMATE_UNIT_LABELS = {"minutes": "мин.", "hours": "ч.", "days": "дн."}
-
-ACHIEVEMENTS = [
-    {"code": "first_task", "title": "Первый шаг", "description": "Выполнить первую задачу", "xp": 10, "icon": "✅"},
-    {"code": "first_focus", "title": "Фокус включён", "description": "Завершить первую фокус-сессию", "xp": 15, "icon": "⏱️"},
-    {"code": "three_day_streak", "title": "3 дня подряд", "description": "Заходить и выполнять действия 3 дня подряд", "xp": 20, "icon": "🔥"},
-    {"code": "ten_tasks", "title": "В потоке", "description": "Выполнить 10 задач", "xp": 25, "icon": "🌊"},
-    {"code": "new_level", "title": "Новый уровень", "description": "Впервые повысить уровень", "xp": 20, "icon": "⭐"},
-    {"code": "productive_day", "title": "День продуктивности", "description": "Выполнить 5 задач за один день", "xp": 15, "icon": "☀️"},
-    {"code": "urgent_important", "title": "Срочно и важно", "description": "Выполнить важную и срочную задачу", "xp": 20, "icon": "⚡"},
-]
-
-BADGES = [
-    {"code": "newbie", "title": "Новичок", "description": "Первые шаги в планировании", "required_level": 2, "icon": "🌱"},
-    {"code": "regular_planner", "title": "Планирую регулярно", "description": "Регулярное использование планирования", "required_level": 3, "icon": "📅"},
-    {"code": "focus_master", "title": "Фокус-мастер", "description": "Открывается на 5 уровне или после 5 фокус-сессий", "required_level": 5, "focus_sessions": 5, "icon": "🎯"},
-    {"code": "stable_progress", "title": "Стабильный прогресс", "description": "Постоянное движение вперёд", "required_level": 7, "icon": "🏆"},
-    {"code": "planning_expert", "title": "Эксперт планирования", "description": "Высокий уровень вовлечённости", "required_level": 10, "icon": "💎"},
-]
 
 MONTH_NAMES = {
     1: "Январь", 2: "Февраль", 3: "Март", 4: "Апрель", 5: "Май", 6: "Июнь",
     7: "Июль", 8: "Август", 9: "Сентябрь", 10: "Октябрь", 11: "Ноябрь", 12: "Декабрь"
 }
-
-
-def ensure_store() -> None:
-    os.makedirs(DATA_DIR, exist_ok=True)
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
-    if not os.path.exists(DATA_FILE):
-        with open(DATA_FILE, "w", encoding="utf-8") as file:
-            json.dump({"users": {}}, file, ensure_ascii=False, indent=2)
-
-
-def load_store() -> Dict[str, Any]:
-    ensure_store()
-    try:
-        with open(DATA_FILE, "r", encoding="utf-8") as file:
-            return json.load(file)
-    except json.JSONDecodeError:
-        return {"users": {}}
-
-
-def save_store(store: Dict[str, Any]) -> None:
-    ensure_store()
-    with open(DATA_FILE, "w", encoding="utf-8") as file:
-        json.dump(store, file, ensure_ascii=False, indent=2)
 
 
 def get_today() -> str:
@@ -80,7 +47,6 @@ def get_today() -> str:
 
 def get_yesterday() -> str:
     return (date.today() - timedelta(days=1)).isoformat()
-
 
 def format_date(value: str | None) -> str:
     if not value:
@@ -95,77 +61,24 @@ def month_label(value: date) -> str:
     return f"{MONTH_NAMES[value.month]} {value.year}"
 
 
-def create_user(nickname: str, password_hash: str | None = None) -> Dict[str, Any]:
-    return {
-        "nickname": nickname,
-        "password_hash": password_hash,
-        "avatar": nickname[:1].upper() if nickname else "F",
-        "settings": DEFAULT_SETTINGS.copy(),
-        "folders": DEFAULT_FOLDERS.copy(),
-        "tasks": [],
-        "xp": 0,
-        "streak": 0,
-        "last_activity": None,
-        "achievements": [],
-        "focus_sessions": 0,
-        "selected_badge": None,
-        "created_at": datetime.now().isoformat(timespec="seconds"),
-    }
-
-
-def normalize_user(user: Dict[str, Any]) -> Dict[str, Any]:
-    user.setdefault("password_hash", None)
-    user.setdefault("settings", DEFAULT_SETTINGS.copy())
-    user["settings"]["theme"] = "light"
-    user.setdefault("folders", DEFAULT_FOLDERS.copy())
-    for folder in DEFAULT_FOLDERS:
-        if folder not in user["folders"]:
-            user["folders"].append(folder)
-    user.setdefault("achievements", [])
-    user.setdefault("focus_sessions", 0)
-    user.setdefault("selected_badge", None)
-    if user.get("selected_badge") and user["selected_badge"] not in available_badge_codes(user):
-        user["selected_badge"] = None
-    for task in user.get("tasks", []):
-        task.setdefault("id", str(uuid.uuid4()))
-        task.setdefault("description", "")
-        task.setdefault("subtasks", [])
-        task.setdefault("attachments", [])
-        task.setdefault("folder", "")
-        task.setdefault("importance", "medium")
-        task.setdefault("urgency", "not_urgent")
-        task["priority"] = calculate_priority(task.get("importance", "medium"), task.get("urgency", "not_urgent"))
-        task.setdefault("date", "")
-        task.setdefault("time", "")
-        task.setdefault("estimate_value", "")
-        task.setdefault("estimate_unit", "hours")
-        task.setdefault("done", False)
-        task["xp"] = calculate_task_xp(task.get("importance", "medium"), task.get("urgency", "not_urgent"), task.get("subtasks", []))
-        task.setdefault("earned_xp", task["xp"] if task.get("done") else 0)
-    return user
 
 
 def current_user() -> Dict[str, Any] | None:
     nickname = session.get("nickname")
     if not nickname:
         return None
-    store = load_store()
-    if nickname not in store["users"]:
-        store["users"][nickname] = create_user(nickname)
-    user = normalize_user(store["users"][nickname])
-    store["users"][nickname] = user
-    save_store(store)
-    return user
+    user = load_user_from_db(nickname)
+    if not user:
+        user = create_user(nickname)
+        sync_user_to_db(user)
+    return normalize_user(user)
 
 
 def update_current_user(user: Dict[str, Any]) -> None:
     nickname = session.get("nickname")
     if not nickname:
         return
-    store = load_store()
-    store["users"][nickname] = normalize_user(user)
-    save_store(store)
-
+    sync_user_to_db(user, old_nickname=nickname)
 
 def login_required(view):
     @wraps(view)
@@ -176,56 +89,28 @@ def login_required(view):
     return wrapped
 
 
-def calculate_priority(importance: str, urgency: str) -> str:
-    if urgency == "urgent" and importance == "high":
-        return "high"
-    if urgency == "urgent" or importance == "high":
-        return "medium"
-    return "low"
-
-
-def calculate_task_xp(importance: str, urgency: str, subtasks: List[Dict[str, Any]] | None = None) -> int:
-    xp = 10
-    xp += {"low": 2, "medium": 5, "high": 10}.get(importance, 5)
-    xp += 10 if urgency == "urgent" else 0
-    xp += 5 if subtasks else 0
-    return xp
 
 
 def register_activity(user: Dict[str, Any]) -> Dict[str, Any]:
     today = get_today()
     yesterday = get_yesterday()
     last_activity = user.get("last_activity")
+    streak_days = user.setdefault("_streak_days", [])
+
     if last_activity == today:
         pass
     elif last_activity == yesterday:
         user["streak"] = int(user.get("streak", 0)) + 1
     else:
         user["streak"] = 1
+        streak_days.clear()
+
     user["last_activity"] = today
+    if today not in streak_days:
+        streak_days.append(today)
     return user
 
 
-def level_state_from_xp(xp: int) -> Dict[str, int]:
-    level = 1
-    remaining = max(0, int(xp))
-    required = 100
-    total_to_current = 0
-    while remaining >= required:
-        remaining -= required
-        total_to_current += required
-        level += 1
-        required += 50
-    progress = round((remaining / required) * 100) if required else 0
-    return {"level": level, "current_xp": remaining, "required_xp": required, "progress": progress, "total_to_current": total_to_current}
-
-
-def level_from_xp(xp: int) -> int:
-    return level_state_from_xp(xp)["level"]
-
-
-def progress_to_next_level(xp: int) -> int:
-    return level_state_from_xp(xp)["progress"]
 
 
 def add_xp(user: Dict[str, Any], xp: int) -> bool:
@@ -242,17 +127,6 @@ def achievement_by_code(code: str) -> Dict[str, Any] | None:
 def badge_by_code(code: str) -> Dict[str, Any] | None:
     return next((item for item in BADGES if item["code"] == code), None)
 
-
-def available_badge_codes(user: Dict[str, Any]) -> List[str]:
-    level = level_from_xp(int(user.get("xp", 0)))
-    focus_sessions = int(user.get("focus_sessions", 0))
-    codes = []
-    for badge in BADGES:
-        required_level = int(badge.get("required_level", 999))
-        required_focus = badge.get("focus_sessions")
-        if level >= required_level or (required_focus and focus_sessions >= int(required_focus)):
-            codes.append(badge["code"])
-    return codes
 
 
 def unlocked_achievement_codes(user: Dict[str, Any]) -> List[str]:
@@ -438,15 +312,14 @@ def login():
         if not password:
             return render_template("login.html", error="Введите пароль")
 
-        store = load_store()
-        user = store["users"].get(nickname)
+        user = load_user_from_db(nickname)
 
         if not user:
-            store["users"][nickname] = create_user(
+            user = create_user(
                 nickname,
                 password_hash=generate_password_hash(password)
             )
-            save_store(store)
+            sync_user_to_db(user)
             session["nickname"] = nickname
             return redirect(url_for("dashboard"))
 
@@ -456,23 +329,19 @@ def login():
         # Для старых профилей без пароля: первый введённый пароль становится паролем профиля.
         if not saved_hash:
             user["password_hash"] = generate_password_hash(password)
-            store["users"][nickname] = user
-            save_store(store)
+            sync_user_to_db(user)
             session["nickname"] = nickname
             return redirect(url_for("dashboard"))
 
         if not check_password_hash(saved_hash, password):
             return render_template("login.html", error="Неверный пароль")
 
-        store["users"][nickname] = user
-        save_store(store)
         session["nickname"] = nickname
         return redirect(url_for("dashboard"))
 
     if session.get("nickname"):
         return redirect(url_for("dashboard"))
     return render_template("login.html")
-
 
 @app.route("/logout")
 def logout():
@@ -881,24 +750,26 @@ def profile():
     if request.method == "POST":
         old_nickname = session.get("nickname")
         new_nickname = request.form.get("nickname", old_nickname).strip() or old_nickname
-        store = load_store()
-        if new_nickname != old_nickname and new_nickname in store["users"]:
+
+        if new_nickname != old_nickname and user_exists(new_nickname):
             return render_template("profile.html", error="Такой никнейм уже используется. Попробуйте другой вариант.")
+
         user["nickname"] = new_nickname
         selected_badge = request.form.get("selected_badge") or None
         if selected_badge and selected_badge not in available_badge_codes(user):
             selected_badge = user.get("selected_badge")
         user["selected_badge"] = selected_badge
         user["avatar"] = request.form.get("avatar", "").strip()[:2].upper() or new_nickname[:1].upper()
-        user["settings"] = {"theme": "light", "accent": request.form.get("accent", "purple"), "notifications": bool(request.form.get("notifications"))}
-        if new_nickname != old_nickname:
-            store["users"].pop(old_nickname, None)
-            session["nickname"] = new_nickname
-        store["users"][new_nickname] = normalize_user(user)
-        save_store(store)
+        user["settings"] = {
+            "theme": "light",
+            "accent": request.form.get("accent", "purple"),
+            "notifications": bool(request.form.get("notifications"))
+        }
+
+        sync_user_to_db(user, old_nickname=old_nickname)
+        session["nickname"] = new_nickname
         return redirect(url_for("profile"))
     return render_template("profile.html")
-
 
 @app.route("/uploads/<task_id>/<filename>")
 @login_required
@@ -907,5 +778,5 @@ def uploaded_file(task_id: str, filename: str):
 
 
 if __name__ == "__main__":
-    ensure_store()
+    ensure_database()
     app.run(debug=True)
