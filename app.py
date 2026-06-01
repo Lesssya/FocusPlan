@@ -485,12 +485,41 @@ def logout():
 def dashboard():
     user = current_user()
     today = get_today()
-    visible_tasks = [t for t in user.get("tasks", []) if t.get("date") in [today, "", None]]
-    visible_tasks = sorted(visible_tasks, key=lambda task: (task.get("done", False), 0 if task.get("date") == today else 1, task.get("time") or "99:99"))
-    today_tasks = [t for t in visible_tasks if t.get("date") == today]
-    no_date_tasks = [t for t in visible_tasks if not t.get("date")]
-    return render_template("dashboard.html", tasks=visible_tasks, today_tasks=today_tasks, no_date_tasks=no_date_tasks, stats=task_stats(visible_tasks), today=today)
 
+    # На главной показываем:
+    # 1) задачи на сегодня;
+    # 2) задачи без даты, но только если они ещё не выполнены.
+    visible_tasks = [
+        t for t in user.get("tasks", [])
+        if (
+            t.get("date") == today
+            or (not t.get("date") and not t.get("done", False))
+        )
+    ]
+
+    visible_tasks = sorted(
+        visible_tasks,
+        key=lambda task: (
+            task.get("done", False),
+            0 if task.get("date") == today else 1,
+            task.get("time") or "99:99"
+        )
+    )
+
+    today_tasks = [t for t in visible_tasks if t.get("date") == today]
+    no_date_tasks = [
+        t for t in visible_tasks
+        if not t.get("date") and not t.get("done", False)
+    ]
+
+    return render_template(
+        "dashboard.html",
+        tasks=visible_tasks,
+        today_tasks=today_tasks,
+        no_date_tasks=no_date_tasks,
+        stats=task_stats(visible_tasks),
+        today=today
+    )
 
 @app.route("/tasks")
 @login_required
