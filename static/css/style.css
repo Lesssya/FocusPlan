@@ -306,3 +306,815 @@
     margin-top: 16px;
 }
 
+
+/* =========================================================
+   ФИНАЛЬНЫЕ ПРАВКИ МОБИЛЬНОГО АДАПТИВА FOCUSPLAN
+   Вставить в самый конец style.css
+   ========================================================= */
+
+@media (max-width: 760px) {
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    body {
+        font-size: 14px;
+        padding-bottom: 0 !important;
+    }
+
+    h1 {
+        font-size: 24px;
+        line-height: 1.18;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        font-size: 16px;
+    }
+
+    /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+
+    .app-main {
+        margin-left: 0 !important;
+        padding: 12px !important;
+        width: 100%;
+    }
+
+    /* ===== НАВИГАЦИЯ СВЕРХУ, НЕ СНИЗУ ===== */
+
+    .sidebar {
+        position: sticky !important;
+        top: 0 !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        z-index: 100;
+
+        width: calc(100% + 24px) !important;
+        height: auto !important;
+        margin: -12px -12px 14px !important;
+        padding: 10px 12px 12px !important;
+
+        display: block !important;
+
+        border-radius: 0 0 22px 22px !important;
+        border: 0 !important;
+        border-bottom: 1px solid var(--border) !important;
+        background: rgba(255, 255, 255, .94) !important;
+        box-shadow: 0 8px 24px rgba(35, 35, 70, .08) !important;
+
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .brand {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .brand span:last-child {
+        font-size: 16px;
+        font-weight: 900;
+    }
+
+    .logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+    }
+
+    .menu {
+        width: 100%;
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+
+    .menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .menu a {
+        flex: 0 0 auto;
+        height: auto !important;
+        min-height: 38px;
+        padding: 9px 12px !important;
+
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 999px !important;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+
+        font-size: 12px !important;
+        line-height: 1 !important;
+        font-weight: 900;
+        white-space: nowrap;
+        color: var(--muted);
+    }
+
+    .menu a::before {
+        display: none !important;
+        content: none !important;
+    }
+
+    .menu a.active,
+    .menu a:hover {
+        background: var(--accent) !important;
+        color: #fff !important;
+        border-color: var(--accent) !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .level-card,
+    .sidebar-card,
+    .logout {
+        display: none !important;
+    }
+
+    /* ===== ВЕРХНИЙ ЗАГОЛОВОК СТРАНИЦЫ ===== */
+
+    .topbar {
+        position: static !important;
+        margin: 0 0 12px !important;
+        padding: 0 !important;
+        background: transparent !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .topbar h1 {
+        margin-bottom: 2px;
+    }
+
+    .topbar p {
+        font-size: 13px;
+    }
+
+    .top-actions {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap !important;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+
+    .top-actions::-webkit-scrollbar {
+        display: none;
+    }
+
+    .top-actions .btn,
+    .top-actions .view-tab,
+    .top-actions a,
+    .top-actions button {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .btn,
+    .view-tab {
+        min-height: 40px;
+        border-radius: 14px;
+        padding: 10px 13px;
+        font-size: 14px;
+    }
+
+    /* =====================================================
+       ГЛАВНАЯ: ПРОГРЕСС БОЛЬШОЙ, ОСТАЛЬНОЕ МАЛЕНЬКОЕ
+       ===================================================== */
+
+    .stats-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* первая карточка — Прогресс дня */
+    .stats-grid .stat:first-child {
+        grid-column: 1 / -1 !important;
+        padding: 16px !important;
+        border-radius: 20px !important;
+    }
+
+    .stats-grid .stat:first-child span {
+        font-size: 13px;
+    }
+
+    .stats-grid .stat:first-child b {
+        font-size: 34px !important;
+        line-height: 1.05;
+        margin: 6px 0 8px !important;
+    }
+
+    .stats-grid .stat:first-child .progress {
+        height: 9px !important;
+        margin-top: 10px !important;
+    }
+
+    /* остальные 3 карточки */
+    .stats-grid .stat:not(:first-child) {
+        padding: 12px 8px !important;
+        min-height: 96px;
+        border-radius: 18px !important;
+        text-align: center;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .stats-grid .stat:not(:first-child) span {
+        font-size: 11px !important;
+        line-height: 1.1;
+    }
+
+    .stats-grid .stat:not(:first-child) b {
+        font-size: 22px !important;
+        line-height: 1.1;
+        margin: 6px 0 4px !important;
+        white-space: nowrap;
+    }
+
+    .stats-grid .stat:not(:first-child) p {
+        font-size: 10.5px !important;
+        line-height: 1.15;
+        max-width: 86px;
+        margin: 0 auto;
+    }
+
+    /* чтобы "44/300 XP до уровня" не ломало карточку */
+    .stats-grid .stat:nth-child(3) p {
+        font-size: 10px !important;
+    }
+
+    /* ===== ОСНОВНЫЕ СЕТКИ ===== */
+
+    .content-grid,
+    .profile-grid,
+    .matrix-grid,
+    .two-cols,
+    .three-cols,
+    .achievement-grid,
+    .badge-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .card {
+        padding: 14px !important;
+        border-radius: 19px !important;
+    }
+
+    .section-head {
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    /* ===== ЗАДАЧИ ===== */
+
+    .task-row summary {
+        grid-template-columns: 36px 1fr !important;
+        gap: 9px !important;
+        padding: 12px !important;
+    }
+
+    .summary-arrow {
+        display: none !important;
+    }
+
+    .task-details {
+        padding: 0 12px 12px 12px !important;
+    }
+
+    .task-title-line b {
+        font-size: 15px;
+        line-height: 1.25;
+    }
+
+    .task-description.short,
+    .task-description {
+        max-width: 100% !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+    }
+
+    .task-actions {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .task-actions .btn,
+    .task-actions button,
+    .task-actions form {
+        width: 100%;
+    }
+
+    .folder-panel {
+        display: grid !important;
+        gap: 10px;
+    }
+
+    .folder-tabs,
+    .task-tabs {
+        display: flex;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        gap: 8px;
+        padding-bottom: 6px;
+        scrollbar-width: none;
+    }
+
+    .folder-tabs::-webkit-scrollbar,
+    .task-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .folder-tabs a,
+    .task-tabs a {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .folder-form {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* =====================================================
+       КАЛЕНДАРЬ
+       ===================================================== */
+
+    .calendar-card {
+        padding: 10px !important;
+        overflow: visible !important;
+    }
+
+    .calendar-toolbar {
+        display: grid !important;
+        grid-template-columns: 42px 1fr 42px !important;
+        gap: 8px !important;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .calendar-toolbar b {
+        text-align: center;
+        font-size: 13px;
+        line-height: 1.2;
+    }
+
+    .calendar-toolbar .btn {
+        min-width: 0;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .calendar-toolbar .btn.secondary {
+        grid-column: 1 / -1;
+    }
+
+    .calendar-undated {
+        display: flex;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        gap: 7px;
+        padding: 9px;
+        margin-bottom: 10px;
+        scrollbar-width: none;
+    }
+
+    .calendar-undated::-webkit-scrollbar {
+        display: none;
+    }
+
+    .calendar-undated b,
+    .calendar-undated .month-task {
+        flex: 0 0 auto;
+    }
+
+    /* День и неделя — скроллятся горизонтально */
+    .calendar-card:has(.week-calendar),
+    .calendar-card:has(.day-calendar) {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .week-calendar {
+        min-width: 720px !important;
+    }
+
+    .day-calendar {
+        min-width: 640px !important;
+    }
+
+    .calendar-extra-time {
+        min-width: 640px;
+    }
+
+    /* =====================================================
+       МЕСЯЦ — ИМЕННО КАЛЕНДАРНАЯ СЕТКА, НЕ СПИСОК
+       ===================================================== */
+
+    .month-calendar {
+        display: grid !important;
+        grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+        width: 100% !important;
+        overflow: visible !important;
+    }
+
+    .month-weekday {
+        display: block !important;
+        padding: 4px 0 !important;
+        text-align: center;
+        color: var(--muted);
+        font-size: 10px !important;
+        font-weight: 900;
+    }
+
+    .month-day {
+        display: block !important;
+        min-height: 72px !important;
+        padding: 5px !important;
+        border-radius: 10px !important;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        overflow: hidden;
+    }
+
+    .month-day.empty {
+        display: block !important;
+        min-height: 72px !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .month-day.today {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+    }
+
+    .month-day b {
+        display: block;
+        margin-bottom: 3px !important;
+        font-size: 11px !important;
+        line-height: 1;
+    }
+
+    .month-task {
+        display: block;
+        width: 100%;
+        margin-bottom: 3px !important;
+        padding: 3px 4px !important;
+        border-radius: 6px !important;
+
+        font-size: 8.5px !important;
+        line-height: 1.1 !important;
+        font-weight: 800;
+
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* если задач много — показываем аккуратно внутри ячейки */
+    .month-day .month-task:nth-of-type(n+4) {
+        display: none;
+    }
+
+    /* ===== МОДАЛКИ ===== */
+
+    .modal {
+        padding: 10px !important;
+        align-items: center !important;
+        place-items: center !important;
+        overflow-y: auto;
+    }
+
+    .modal.open {
+        display: grid !important;
+    }
+
+    .modal-card {
+        width: 100% !important;
+        max-width: 520px !important;
+        max-height: 92svh !important;
+        overflow-y: auto !important;
+
+        margin: 0 !important;
+        padding: 20px 16px !important;
+        border-radius: 22px !important;
+    }
+
+    .wide-modal {
+        width: 100% !important;
+    }
+
+    .modal-close {
+        top: 12px !important;
+        right: 12px !important;
+    }
+
+    .modal-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .modal-actions .btn {
+        width: 100%;
+    }
+
+    .subtask-input-row {
+        grid-template-columns: 1fr 42px !important;
+    }
+
+    /* ===== ФОКУС ===== */
+
+    .focus-page {
+        min-height: auto !important;
+        display: block !important;
+    }
+
+    .focus-card {
+        width: 100% !important;
+        padding: 20px 15px !important;
+        border-radius: 22px !important;
+    }
+
+    .focus-top {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .timer-shell {
+        width: 210px !important;
+        height: 210px !important;
+    }
+
+    .timer {
+        width: 178px !important;
+        height: 178px !important;
+        font-size: 38px !important;
+    }
+
+    .timer-actions {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .timer-actions .btn {
+        width: 100%;
+    }
+
+    /* ===== УВЕДОМЛЕНИЯ ===== */
+
+    .toast {
+        left: 12px !important;
+        right: 12px !important;
+        bottom: 14px !important;
+        transform: none !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+    }
+}
+
+/* Совсем маленькие телефоны */
+@media (max-width: 420px) {
+    .app-main {
+        padding: 10px !important;
+    }
+
+    .sidebar {
+        width: calc(100% + 20px) !important;
+        margin: -10px -10px 12px !important;
+        padding: 9px 10px 11px !important;
+    }
+
+    .menu a {
+        font-size: 11px !important;
+        padding: 8px 10px !important;
+    }
+
+    .stats-grid {
+        gap: 7px !important;
+    }
+
+    .stats-grid .stat:not(:first-child) {
+        min-height: 88px;
+        padding: 10px 6px !important;
+    }
+
+    .stats-grid .stat:not(:first-child) b {
+        font-size: 20px !important;
+    }
+
+    .stats-grid .stat:not(:first-child) p {
+        font-size: 9.5px !important;
+    }
+
+    .month-calendar {
+        gap: 3px !important;
+    }
+
+    .month-day,
+    .month-day.empty {
+        min-height: 62px !important;
+        padding: 4px !important;
+        border-radius: 8px !important;
+    }
+
+    .month-weekday {
+        font-size: 9px !important;
+    }
+
+    .month-day b {
+        font-size: 10px !important;
+    }
+
+    .month-task {
+        font-size: 7.8px !important;
+        padding: 2px 3px !important;
+    }
+
+    .task-actions {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Кнопка "Новая папка" на мобильных — меньше и спокойнее */
+@media (max-width: 760px) {
+    .folder-form .btn,
+    .folder-panel .btn,
+    button[onclick*="folder"],
+    button[onclick*="Folder"] {
+        width: auto !important;
+        min-height: 34px !important;
+        padding: 7px 10px !important;
+        border-radius: 11px !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        box-shadow: none !important;
+    }
+
+/* Кнопка "Новая папка" на мобильных — меньше и спокойнее */
+@media (max-width: 760px) {
+    .folder-form .btn,
+    .folder-panel .btn,
+    button[onclick*="folder"],
+    button[onclick*="Folder"] {
+        width: auto !important;
+        min-height: 34px !important;
+        padding: 7px 10px !important;
+        border-radius: 11px !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        box-shadow: none !important;
+    }
+
+    .folder-form {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    .folder-form input {
+        flex: 1 !important;
+        min-height: 40px !important;
+    }
+}
+
+/* =========================================================
+   МОБИЛЬНЫЕ БЕЙДЖИ — компактные квадратные карточки
+   Вставить в самый конец style.css
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .badge-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+
+    .badge-card {
+        aspect-ratio: 1 / 1 !important;
+        min-height: 0 !important;
+        padding: 12px 8px !important;
+        border-radius: 18px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+
+        background: radial-gradient(circle at top, rgba(89, 91, 242, .14), #fff 62%) !important;
+        box-shadow: none !important;
+    }
+
+    .badge-medal {
+        width: 58px !important;
+        height: 58px !important;
+        min-width: 58px !important;
+        min-height: 58px !important;
+        margin-bottom: 8px !important;
+
+        border-radius: 50% !important;
+        font-size: 30px !important;
+        line-height: 1 !important;
+    }
+
+    .badge-card h3,
+    .badge-card b {
+        font-size: 13px !important;
+        line-height: 1.15 !important;
+        margin: 0 0 5px !important;
+
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+
+    .badge-card p {
+        font-size: 10.5px !important;
+        line-height: 1.2 !important;
+        margin: 0 0 8px !important;
+        color: var(--muted) !important;
+
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+
+    .badge-card .btn,
+    .badge-card button,
+    .badge-card form button {
+        width: 100% !important;
+        min-height: 32px !important;
+        padding: 7px 8px !important;
+        border-radius: 11px !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        margin-top: auto !important;
+    }
+}
+
+/* совсем маленький экран */
+@media (max-width: 380px) {
+    .badge-grid {
+        gap: 8px !important;
+    }
+
+    .badge-card {
+        padding: 10px 7px !important;
+        border-radius: 16px !important;
+    }
+
+    .badge-medal {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+        min-height: 52px !important;
+        font-size: 27px !important;
+    }
+
+    .badge-card h3,
+    .badge-card b {
+        font-size: 12px !important;
+    }
+
+    .badge-card p {
+        font-size: 10px !important;
+    }
+}
